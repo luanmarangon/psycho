@@ -1,0 +1,37 @@
+{
+    "name": "luanmarangon/psycho",
+    "description": "PSYCHO - Sistema para Psicologas",
+    "minimum-stability": "stable",
+    "authors": [
+    {
+    "name": "Luan Marangon",
+    "email": "luan.limarangon@gmail.com",
+    "role": "Developer"
+    }
+    ],
+    "config": {
+    "vendor-dir": "vendor"
+    },
+    "autoload": {
+    "psr-4": {
+    "Source\\": "source/"
+    },
+    "files": [
+    "source/Boot/Config.php",
+    "source/Boot/Helpers.php",
+    "source/Boot/Minify/Web.php"
+    ]
+    },
+    "require": {
+    "php": "^8.1.0",
+    "ext-pdo": "^8.1.0",
+    "phpmailer/phpmailer": "6.9.1",
+    "league/plates": "v3.5.0",
+    "matthiasmullie/minify": "1.3.71",
+    "coffeecode/uploader": "2.0.4",
+    "coffeecode/cropper": "2.0.4",
+    "coffeecode/optimizer": "2.1.1",
+    "coffeecode/paginator": "2.0.1",
+    "coffeecode/router": "2.0.2"
+    }
+    }
