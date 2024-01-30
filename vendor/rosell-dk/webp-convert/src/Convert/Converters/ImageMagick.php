@@ -64,7 +64,7 @@ class ImageMagick extends AbstractConverter
     // Check if webp delegate is installed
     public function isWebPDelegateInstalled()
     {
-        exec($this->getPath() . ' -list delegate 2>&1', $output, $returnCode);
+        exec('convert -list delegate 2>&1', $output, $returnCode);
         foreach ($output as $line) {
             if (preg_match('#webp\\s*=#i', $line)) {
                 return true;
@@ -72,7 +72,7 @@ class ImageMagick extends AbstractConverter
         }
 
         // try other command
-        exec($this->getPath() . ' -list configure 2>&1', $output, $returnCode);
+        exec('convert -list configure 2>&1', $output, $returnCode);
         foreach ($output as $line) {
             if (preg_match('#DELEGATE.*webp#i', $line)) {
                 return true;

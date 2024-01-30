@@ -2,10 +2,6 @@
 
 namespace CoffeeCode\Optimizer;
 
-use JetBrains\PhpStorm\Pure;
-use SimpleXMLIterator;
-use stdClass;
-
 /**
  * Class CoffeeCode MetaTags
  *
@@ -14,21 +10,21 @@ use stdClass;
  */
 class MetaTags
 {
-    /** @var SimpleXMLIterator */
-    protected SimpleXMLIterator $meta;
+    /** @var \SimpleXMLIterator */
+    protected $meta;
 
-    /** @var stdClass */
-    protected stdClass $data;
+    /** @var \stdClass */
+    protected $data;
 
     /** @var array */
-    protected array $tags = ["property" => "og", "name" => "twitter"];
+    protected $tags = ["property" => "og", "name" => "twitter"];
 
     /**
      * MetaTags constructor.
      */
     public function __construct()
     {
-        $this->meta = new SimpleXMLIterator("<meta/>");
+        $this->meta = new \SimpleXMLIterator("<meta/>");
     }
 
     /**
@@ -38,7 +34,7 @@ class MetaTags
     public function __set($name, $value)
     {
         if (empty($this->data)) {
-            $this->data = new stdClass();
+            $this->data = new \stdClass();
         }
 
         $this->data->$name = $value;
@@ -55,9 +51,9 @@ class MetaTags
 
     /**
      * @param $name
-     * @return string|null
+     * @return null|string
      */
-    public function __get($name): ?string
+    public function __get($name)
     {
         return ($this->data->$name ?? null);
     }
@@ -67,7 +63,7 @@ class MetaTags
      * @param string|null $desc
      * @param string|null $url
      * @param string|null $image
-     * @return object|null
+     * @return object
      */
     public function data(string $title = null, string $desc = null, string $url = null, string $image = null): ?object
     {
@@ -80,9 +76,9 @@ class MetaTags
     }
 
     /**
-     * @return SimpleXMLIterator
+     * @return \SimpleXMLIterator
      */
-    public function meta(): SimpleXMLIterator
+    public function meta(): \SimpleXMLIterator
     {
         return $this->meta;
     }

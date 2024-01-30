@@ -2,8 +2,6 @@
 
 namespace CoffeeCode\Uploader;
 
-use Exception;
-
 /**
  * Class CoffeeCode Media
  *
@@ -17,7 +15,7 @@ class Media extends Uploader
      * @var array allowed media types
      * https://www.freeformatter.com/mime-types-list.html
      */
-    protected static array $allowTypes = [
+    protected static $allowTypes = [
         "audio/mp3",
         "audio/mpeg",
         "video/mp4",
@@ -27,7 +25,7 @@ class Media extends Uploader
      * Allowed extensions to types.
      * @var array
      */
-    protected static array $extensions = [
+    protected static $extensions = [
         "mp3",
         "mp4"
     ];
@@ -35,15 +33,15 @@ class Media extends Uploader
     /**
      * @param array $media
      * @param string $name
-     * @return string
-     * @throws Exception
+     * @return null|string
+     * @throws \Exception
      */
     public function upload(array $media, string $name): string
     {
-        $this->ext($media);
+        $this->ext = mb_strtolower(pathinfo($media['name'])['extension']);
 
         if (!in_array($media['type'], static::$allowTypes) || !in_array($this->ext, static::$extensions)) {
-            throw new Exception("Not a valid media type or extension");
+            throw new \Exception("Not a valid media type or extension");
         }
 
         $this->name($name);

@@ -2,7 +2,6 @@
 
 <div class="form">
     <form name="env" method="post" enctype="multipart/form-data">
-        <p>Envie um arquivo AI (postscript)</p>
         <?php
         require __DIR__ . "/../src/Uploader.php";
         require __DIR__ . "/../src/Send.php";

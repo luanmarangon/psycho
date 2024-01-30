@@ -5,21 +5,19 @@
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/coffeecode/router.svg?style=flat-square)](https://packagist.org/packages/coffeecode/router)
 [![Latest Version](https://img.shields.io/github/release/robsonvleite/router.svg?style=flat-square)](https://github.com/robsonvleite/router/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Build](https://img.shields.io/scrutinizer/build/g/robsonvleite/router.svg?style=flat-square)](https://scrutinizer-ci.com/g/robsonvleite/router)
 [![Quality Score](https://img.shields.io/scrutinizer/g/robsonvleite/router.svg?style=flat-square)](https://scrutinizer-ci.com/g/robsonvleite/router)
 [![Total Downloads](https://img.shields.io/packagist/dt/coffeecode/router.svg?style=flat-square)](https://packagist.org/packages/coffeecode/router)
 
 ###### Small, simple and uncomplicated. The router is a PHP route components with abstraction for MVC. Prepared with RESTfull verbs (GET, POST, PUT, PATCH and DELETE), works on its own layer in isolation and can be integrated without secrets to your application.
 
-Pequeno, simples e descomplicado. O router é um componentes de rotas PHP com abstração para MVC. Preparado com verbos
-RESTfull (GET, POST, PUT, PATCH e DELETE), trabalha em sua própria camada de forma isolada e pode ser integrado sem
-segredos a sua aplicação.
+Pequeno, simples e descomplicado. O router é um componentes de rotas PHP com abstração para MVC. Preparado com verbos RESTfull (GET, POST, PUT, PATCH e DELETE), trabalha em sua própria camada de forma isolada e pode ser integrado sem segredos a sua aplicação.
 
 ## About CoffeeCode
 
 ###### CoffeeCode is a set of small and optimized PHP components for common tasks. Held by Robson V. Leite and the UpInside team. With them you perform routine tasks with fewer lines, writing less and doing much more.
 
-CoffeeCode é um conjunto de pequenos e otimizados componentes PHP para tarefas comuns. Mantido por Robson V. Leite e a
-equipe UpInside. Com eles você executa tarefas rotineiras com poucas linhas, escrevendo menos e fazendo muito mais.
+CoffeeCode é um conjunto de pequenos e otimizados componentes PHP para tarefas comuns. Mantido por Robson V. Leite e a equipe UpInside. Com eles você executa tarefas rotineiras com poucas linhas, escrevendo menos e fazendo muito mais.
 
 ### Highlights
 
@@ -35,7 +33,7 @@ equipe UpInside. Com eles você executa tarefas rotineiras com poucas linhas, es
 Router is available via Composer:
 
 ```bash
-"coffeecode/router": "2.0.*"
+"coffeecode/router": "1.0.*"
 ```
 
 or run
@@ -48,11 +46,9 @@ composer require coffeecode/router
 
 ###### For details on how to use the router, see the sample folder with details in the component directory. To use the router you need to redirect your route routing navigation (index.php) where all traffic must be handled. The example below shows how:
 
-Para mais detalhes sobre como usar o router, veja a pasta de exemplo com detalhes no diretório do componente. Para usar
-o router é preciso redirecionar sua navegação para o arquivo raiz de rotas (index.php) onde todo o tráfego deve ser
-tratado. O exemplo abaixo mostra como:
+Para mais detalhes sobre como usar o router, veja a pasta de exemplo com detalhes no diretório do componente. Para usar o router é preciso redirecionar sua navegação para o arquivo raiz de rotas (index.php) onde todo o tráfego deve ser tratado. O exemplo abaixo mostra como:
 
-#### Apache
+#### apache
 
 ```apacheconfig
 RewriteEngine On
@@ -73,7 +69,7 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?route=/$1 [L,QSA]
 ```
 
-#### Nginx
+#### nginx
 
 ````nginxconfig
 location / {
@@ -87,6 +83,7 @@ location / {
 
 ```php
 <?php
+require __DIR__ . "/../vendor/autoload.php";
 
 use CoffeeCode\Router\Router;
 
@@ -111,17 +108,8 @@ $router->delete("/route/{id}", "Controller:method");
  * The controller must be in the namespace Dash\Controller
  */
 $router->group("admin")->namespace("Dash");
-
 $router->get("/route", "Controller:method");
 $router->post("/route/{id}", "Controller:method");
-
-/**
- * sub group
- */
-$router->group("admin/support");
-
-$router->get("/tickets", "Controller:method");
-$router->post("/ticket/{id}", "Controller:method");
 
 /**
  * Group Error
@@ -147,6 +135,7 @@ if ($router->error()) {
 
 ```php
 <?php
+require __DIR__ . "/../vendor/autoload.php";
 
 use CoffeeCode\Router\Router;
 
@@ -175,11 +164,9 @@ if ($router->error()) {
 }
 ```
 
-###### Named Controller Example
+###### Named Controller Exemple
 
 ```php
-<?php
-
 class Name
 {
     public function __construct($router)
@@ -203,13 +190,12 @@ class Name
 ```
 
 ###### Named Params
-
 ````php
-<?php
+//route
+$router->get("/params/{category}/page/{page}", "Name:params", "name.params");
 
-use CoffeeCode\Router\Router;
-
-$router = new Router("https://www.youdomain.com");
+//$this->route = return URL
+//$this->redirect = redirect URL
 
 $this->router->route("name.params", [
     "category" => 22,
@@ -217,7 +203,7 @@ $this->router->route("name.params", [
 ]);
 
 //result
-//https://www.youdomain.com/name/params/22/page/2
+https://www.{}/name/params/22/page/2
 
 $this->router->route("name.params", [
     "category" => 22,
@@ -227,33 +213,18 @@ $this->router->route("name.params", [
 ]);
 
 //result
-//https://www.youdomain.com/name/params/22/page/2?argument1=most+filter&argument2=most+search
+https://www.{}/name/params/22/page/2?argument1=most+filter&argument2=most+search
 ````
 
 ##### Callable
 
 ```php
-<?php
-
-use CoffeeCode\Router\Router;
-
-$router = new Router("https://www.youdomain.com");
-
 /**
  * GET httpMethod
  */
 $router->get("/", function ($data) {
     $data = ["realHttp" => $_SERVER["REQUEST_METHOD"]] + $data;
     echo "<h1>GET :: Spoofing</h1>", "<pre>", print_r($data, true), "</pre>";
-});
-
-/**
- * GET httpMethod and Route
- */
- $router->get("/", function ($data, Router $route) {
-    $data = ["realHttp" => $_SERVER["REQUEST_METHOD"]] + $data;
-    echo "<h1>GET :: Spoofing</h1>", "<pre>", print_r($data, true), "</pre>";
-    var_dump($route->current());
 });
 
 /**
@@ -291,76 +262,13 @@ $router->delete("/", function ($data) {
 $router->dispatch();
 ```
 
-##### Simple Middleware
-
-```php
-<?php
-
-use CoffeeCode\Router\Router;
-
-$router = new Router("https://www.youdomain.com");
-
-//simple
-$router->get("/edit/{id}", "Coffee:edit", middleware: \Http\Guest::class);
-$router->get("/denied", "Coffee:denied", "coffe.denied", \Http\Group::class);
-
-//multiple
-$router->get("/logado", "Coffee:logged", middleware: [\Http\Guest::class, \Http\Group::class]);
-
-//callable
-$router->get("/call", function ($data, Router $router){
-    //code here
-}, middleware: \Http\Guest::class);
-```
-
-##### Simple Middleware Group
-
-```php
-<?php
-
-use CoffeeCode\Router\Router;
-
-$router = new Router("https://www.youdomain.com");
-
-//group single or multiple
-$router->group("name", \Http\Guest::class);
-$router->get("/", "Name:home", "name.home");
-$router->get("/hello", "Name:hello", "name.hello");
-$router->get("/redirect", "Name:redirect", "name.redirect");
-```
-
-##### Simple Middleware Class Example
-
-```php
-<?php
-
-namespace Http;
-
-use CoffeeCode\Router\Router;
-
-class User
-{
-    public function handle(Router $router): bool
-    {
-        $user = true;
-        if ($user) {
-            var_dump($router->current());
-            return true;
-        }
-        return false;
-    }
-}
-```
-
 ##### Form Spoofing
 
 ###### This example shows how to access the routes (PUT, PATCH, DELETE) from the application. You can see more details in the sample folder. From an attention to the _method field, it can be of the hidden type.
 
-Esse exemplo mostra como acessar as rotas (PUT, PATCH, DELETE) a partir da aplicação. Você pode ver mais detalhes na
-pasta de exemplo. De uma atenção para o campo _method, ele pode ser do tipo hidden.
+Esse exemplo mostra como acessar as rotas (PUT, PATCH, DELETE) a partir da aplicação. Você pode ver mais detalhes na pasta de exemplo. De uma atenção para o campo _method, ele pode ser do tipo hidden.
 
 ```html
-
 <form action="" method="POST">
     <select name="_method">
         <option value="POST">POST</option>
@@ -377,7 +285,7 @@ pasta de exemplo. De uma atenção para o campo _method, ele pode ser do tipo hi
 </form>
 ```
 
-##### PHP cURL example
+##### PHP cURL exemple
 
 ```php
 <?php
@@ -385,7 +293,7 @@ pasta de exemplo. De uma atenção para o campo _method, ele pode ser do tipo hi
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "http://localhost/coffeecode/router/example/spoofing/",
+  CURLOPT_URL => "http://localhost/coffeecode/router/exemple/spoofing/",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -419,8 +327,7 @@ Please see [CONTRIBUTING](https://github.com/robsonvleite/router/blob/master/CON
 
 ###### Security: If you discover any security related issues, please email cursos@upinside.com.br instead of using the issue tracker.
 
-Se você descobrir algum problema relacionado à segurança, envie um e-mail para cursos@upinside.com.br em vez de usar o
-rastreador de problemas.
+Se você descobrir algum problema relacionado à segurança, envie um e-mail para cursos@upinside.com.br em vez de usar o rastreador de problemas.
 
 Thank you
 
@@ -432,5 +339,4 @@ Thank you
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/robsonvleite/router/blob/master/LICENSE) for more
-information.
+The MIT License (MIT). Please see [License File](https://github.com/robsonvleite/router/blob/master/LICENSE) for more information.

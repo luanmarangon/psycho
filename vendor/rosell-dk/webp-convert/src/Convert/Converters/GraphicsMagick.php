@@ -97,17 +97,9 @@ class GraphicsMagick extends AbstractConverter
     {
         $commandArguments = [];
 
-        /*
-        if ($this->isQualityDetectionRequiredButFailing()) {
-            // Unlike imagick binary, it seems gmagick binary uses a fixed
-            // quality (75) when quality is omitted
-            // So we cannot simply omit in order to get same quality as source.
-            // But perhaps there is another way?
-            // Check out #91 - it is perhaps as easy as this: "-define jpeg:preserve-settings"
-        }
-        */
+        // Unlike imagick binary, it seems gmagick binary uses a fixed
+        // quality (75) when quality is omitted
         $commandArguments[] = '-quality ' . escapeshellarg($this->getCalculatedQuality());
-
 
         // encoding
         if ($this->options['encoding'] == 'lossless') {

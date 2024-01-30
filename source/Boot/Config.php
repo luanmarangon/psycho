@@ -31,8 +31,8 @@ if (strpos($_SERVER['HTTP_HOST'], "localhost")) {
 /**
  * PROJECTS URLs
  */
-define("CONF_URL_BASE", "https://localhost:8080/psycho");
-define("CONF_URL_TEST", "https://localhost:8080/psycho");
+define("CONF_URL_BASE", "http://localhost:8080/psycho");
+define("CONF_URL_TEST", "http://localhost:8080/psycho");
 
 /**
  * SITE
@@ -113,7 +113,7 @@ define("CONF_VIEW_PATH", __DIR__ . "/../../shared/views");
 define("CONF_VIEW_EXT", "php");
 define("CONF_VIEW_THEME", "monica");
 // define("CONF_VIEW_APP", "imobapp");
-// define("CONF_VIEW_ADMIN", "imobadm");
+define("CONF_VIEW_ADMIN", "adminPanel");
 
 /**
  * UPLOAD

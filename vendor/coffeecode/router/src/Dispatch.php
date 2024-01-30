@@ -12,38 +12,26 @@ abstract class Dispatch
 {
     use RouterTrait;
 
-    /** @var string */
-    protected string $projectUrl;
+    /** @var null|array */
+    protected $route;
+
+    /** @var bool|string */
+    protected $projectUrl;
 
     /** @var string */
-    protected string $httpMethod;
+    protected $separator;
 
-    /** @var string */
-    protected string $path;
+    /** @var null|string */
+    protected $namespace;
 
-    /** @var array|null */
-    protected ?array $route = null;
+    /** @var null|string */
+    protected $group;
 
-    /** @var array */
-    protected array $routes;
-
-    /** @var string */
-    protected string $separator;
-
-    /** @var string|null */
-    protected ?string $namespace = null;
-
-    /** @var string|null */
-    protected ?string $group = null;
-
-    /** @var array|null */
-    protected ?array $middleware = null;
-
-    /** @var array|null */
-    protected ?array $data = null;
+    /** @var null|array */
+    protected $data;
 
     /** @var int */
-    protected ?int $error = null;
+    protected $error;
 
     /** @const int Bad Request */
     public const BAD_REQUEST = 400;
@@ -66,7 +54,7 @@ abstract class Dispatch
     public function __construct(string $projectUrl, ?string $separator = ":")
     {
         $this->projectUrl = (substr($projectUrl, "-1") == "/" ? substr($projectUrl, 0, -1) : $projectUrl);
-        $this->path = rtrim((filter_input(INPUT_GET, "route", FILTER_DEFAULT) ?? "/"), "/");
+        $this->patch = (filter_input(INPUT_GET, "route", FILTER_DEFAULT) ?? "/");
         $this->separator = ($separator ?? ":");
         $this->httpMethod = $_SERVER['REQUEST_METHOD'];
     }
@@ -77,23 +65,6 @@ abstract class Dispatch
     public function __debugInfo()
     {
         return $this->routes;
-    }
-
-    /**
-     * @param string $name
-     * @param array|null $data
-     * @return string|null
-     */
-    public function route(string $name, array $data = null): ?string
-    {
-        foreach ($this->routes as $http_verb) {
-            foreach ($http_verb as $route_item) {
-                if (!empty($route_item["name"]) && $route_item["name"] == $name) {
-                    return $this->treat($route_item, $data);
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -110,10 +81,9 @@ abstract class Dispatch
      * @param null|string $group
      * @return Dispatch
      */
-    public function group(?string $group, array|string $middleware = null): Dispatch
+    public function group(?string $group): Dispatch
     {
-        $this->group = ($group ? trim($group, "/") : null);
-        $this->middleware = $middleware ? [$this->group => $middleware] : null;
+        $this->group = ($group ? str_replace("/", "", $group) : null);
         return $this;
     }
 
@@ -123,50 +93,6 @@ abstract class Dispatch
     public function data(): ?array
     {
         return $this->data;
-    }
-
-    /**
-     * @return object|null
-     */
-    public function current(): ?object
-    {
-        return (object)array_merge(
-            [
-                "namespace" => $this->namespace,
-                "group" => $this->group,
-                "path" => $this->path
-            ],
-            $this->route ?? []
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function home(): string
-    {
-        return $this->projectUrl;
-    }
-
-    /**
-     * @param string $route
-     * @param array|null $data
-     */
-    public function redirect(string $route, array $data = null): void
-    {
-        if ($name = $this->route($route, $data)) {
-            header("Location: {$name}");
-            exit;
-        }
-
-        if (filter_var($route, FILTER_VALIDATE_URL)) {
-            header("Location: {$route}");
-            exit;
-        }
-
-        $route = (substr($route, 0, 1) == "/" ? $route : "/{$route}");
-        header("Location: {$this->projectUrl}{$route}");
-        exit;
     }
 
     /**
@@ -189,11 +115,78 @@ abstract class Dispatch
 
         $this->route = null;
         foreach ($this->routes[$this->httpMethod] as $key => $route) {
-            if (preg_match("~^" . $key . "$~", $this->path, $found)) {
+            if (preg_match("~^" . $key . "$~", $this->patch, $found)) {
                 $this->route = $route;
             }
         }
 
         return $this->execute();
+    }
+
+    /**
+     * @return bool
+     */
+    private function execute()
+    {
+        if ($this->route) {
+            if (is_callable($this->route['handler'])) {
+                call_user_func($this->route['handler'], ($this->route['data'] ?? []));
+                return true;
+            }
+
+            $controller = $this->route['handler'];
+            $method = $this->route['action'];
+
+            if (class_exists($controller)) {
+                $newController = new $controller($this);
+                if (method_exists($controller, $method)) {
+                    $newController->$method(($this->route['data'] ?? []));
+                    return true;
+                }
+
+                $this->error = self::METHOD_NOT_ALLOWED;
+                return false;
+            }
+
+            $this->error = self::BAD_REQUEST;
+            return false;
+        }
+
+        $this->error = self::NOT_FOUND;
+        return false;
+    }
+
+    /**
+     * httpMethod form spoofing
+     */
+    protected function formSpoofing(): void
+    {
+        $post = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        if (!empty($post['_method']) && in_array($post['_method'], ["PUT", "PATCH", "DELETE"])) {
+            $this->httpMethod = $post['_method'];
+            $this->data = $post;
+
+            unset($this->data["_method"]);
+            return;
+        }
+
+        if ($this->httpMethod == "POST") {
+            $this->data = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+            unset($this->data["_method"]);
+            return;
+        }
+
+        if (in_array($this->httpMethod, ["PUT", "PATCH", "DELETE"]) && !empty($_SERVER['CONTENT_LENGTH'])) {
+            parse_str(file_get_contents('php://input', false, null, 0, $_SERVER['CONTENT_LENGTH']), $putPatch);
+            $this->data = $putPatch;
+
+            unset($this->data["_method"]);
+            return;
+        }
+
+        $this->data = [];
+        return;
     }
 }

@@ -23,76 +23,51 @@ class Router extends Dispatch
 
     /**
      * @param string $route
-     * @param callable|string $handler
+     * @param $handler
      * @param string|null $name
-     * @param array|string|null $middleware
      */
-    public function get(
-        string $route,
-        callable|string $handler,
-        string $name = null,
-        array|string $middleware = null
-    ): void {
-        $this->addRoute("GET", $route, $handler, $name, $middleware);
+    public function post(string $route, $handler, string $name = null): void
+    {
+        $this->addRoute("POST", $route, $handler, $name);
     }
 
     /**
      * @param string $route
-     * @param callable|string $handler
+     * @param $handler
      * @param string|null $name
-     * @param array|string|null $middleware
      */
-    public function post(
-        string $route,
-        callable|string $handler,
-        string $name = null,
-        array|string $middleware = null
-    ): void {
-        $this->addRoute("POST", $route, $handler, $name, $middleware);
+    public function get(string $route, $handler, string $name = null): void
+    {
+        $this->addRoute("GET", $route, $handler, $name);
     }
 
     /**
      * @param string $route
-     * @param callable|string $handler
+     * @param $handler
      * @param string|null $name
-     * @param array|string|null $middleware
      */
-    public function put(
-        string $route,
-        callable|string $handler,
-        string $name = null,
-        array|string $middleware = null
-    ): void {
-        $this->addRoute("PUT", $route, $handler, $name, $middleware);
+    public function put(string $route, $handler, string $name = null): void
+    {
+        $this->addRoute("PUT", $route, $handler, $name);
     }
 
     /**
      * @param string $route
-     * @param callable|string $handler
+     * @param $handler
      * @param string|null $name
-     * @param array|string|null $middleware
      */
-    public function patch(
-        string $route,
-        callable|string $handler,
-        string $name = null,
-        array|string $middleware = null
-    ): void {
-        $this->addRoute("PATCH", $route, $handler, $name, $middleware);
+    public function patch(string $route, $handler, string $name = null): void
+    {
+        $this->addRoute("PATCH", $route, $handler, $name);
     }
 
     /**
      * @param string $route
-     * @param callable|string $handler
+     * @param $handler
      * @param string|null $name
-     * @param array|string|null $middleware
      */
-    public function delete(
-        string $route,
-        callable|string $handler,
-        string $name = null,
-        array|string $middleware = null
-    ): void {
-        $this->addRoute("DELETE", $route, $handler, $name, $middleware);
+    public function delete(string $route, $handler, string $name = null): void
+    {
+        $this->addRoute("DELETE", $route, $handler, $name);
     }
 }

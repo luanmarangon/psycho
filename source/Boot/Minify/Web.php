@@ -8,8 +8,8 @@ if (strpos(url(), "localhost")) {
      * CSS
      */
     $minCSS = new CSS();
-    // $minCSS->add(__DIR__ . "/../../../shared/styles/styles.css");
-    // $minCSS->add(__DIR__ . "/../../../shared/styles/boot.css");
+    $minCSS->add(__DIR__ . "/../../../shared/styles/styles.css");
+    $minCSS->add(__DIR__ . "/../../../shared/styles/boot.css");
     // $minCSS->add(__DIR__ . "/../../../shared/styles/ajax.css");
 
 
@@ -29,7 +29,7 @@ if (strpos(url(), "localhost")) {
      * JS
      */
     $minJS = new JS();
-    $minJS->add(__DIR__ . "/../../../shared/scripts/jquery.js");
+    $minJS->add(__DIR__ . "/../../../shared/scripts/jquery.min.js");
     // $minJS->add(__DIR__ . "/../../../shared/scripts/jquery.mask.min.js");
     // $minJS->add(__DIR__ . "/../../../shared/scripts/jquery-ui.js");
     // $minJS->add(__DIR__ . "/../../../shared/scripts/jquery.form.js");

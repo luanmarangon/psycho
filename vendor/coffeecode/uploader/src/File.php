@@ -2,8 +2,6 @@
 
 namespace CoffeeCode\Uploader;
 
-use Exception;
-
 /**
  * Class CoffeeCode File
  *
@@ -17,7 +15,7 @@ class File extends Uploader
      * @var array allowed file types
      * https://www.freeformatter.com/mime-types-list.html
      */
-    protected static array $allowTypes = [
+    protected static $allowTypes = [
         "application/zip",
         'application/x-rar-compressed',
         'application/x-bzip',
@@ -35,7 +33,7 @@ class File extends Uploader
      * Allowed extensions to types.
      * @var array
      */
-    protected static array $extensions = [
+    protected static $extensions = [
         "zip",
         "rar",
         "bz",
@@ -52,15 +50,15 @@ class File extends Uploader
     /**
      * @param array $file
      * @param string $name
-     * @return string
-     * @throws Exception
+     * @return null|string
+     * @throws \Exception
      */
     public function upload(array $file, string $name): string
     {
-        $this->ext($file);
+        $this->ext = mb_strtolower(pathinfo($file['name'])['extension']);
 
         if (!in_array($file['type'], static::$allowTypes) || !in_array($this->ext, static::$extensions)) {
-            throw new Exception("Not a valid file type or extension");
+            throw new \Exception("Not a valid file type or extension");
         }
 
         $this->name($name);

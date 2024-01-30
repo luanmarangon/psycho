@@ -7,7 +7,6 @@ use WebPConvert\Convert\Converters\ConverterTraits\EncodingAutoTrait;
 use WebPConvert\Convert\Exceptions\ConversionFailedException;
 use WebPConvert\Convert\Exceptions\ConversionFailed\ConverterNotOperational\SystemRequirementsNotMetException;
 use WebPConvert\Options\BooleanOption;
-use WebPConvert\Options\IntegerOption;
 
 //require '/home/rosell/.composer/vendor/autoload.php';
 
@@ -25,7 +24,6 @@ class Vips extends AbstractConverter
     protected function getUnsupportedDefaultOptions()
     {
         return [
-            'auto-filter',
             'size-in-percentage',
             'use-nice'
         ];
@@ -58,31 +56,8 @@ class Vips extends AbstractConverter
             );
         }
 
-        if (!function_exists('vips_call')) {
-            throw new SystemRequirementsNotMetException(
-                'Vips extension seems to be installed, however something is not right: ' .
-                'the function "vips_call" is not available.'
-            );
-        }
-
-        if (!function_exists('vips_error_buffer')) {
-            throw new SystemRequirementsNotMetException(
-                'Vips extension seems to be installed, however something is not right: ' .
-                'the function "vips_error_buffer" is not available.'
-            );
-        }
-
-
-        /** @scrutinizer ignore-call */ vips_error_buffer(); // clear error buffer
-        $result = /** @scrutinizer ignore-call */ vips_call('webpsave', null);
-        if ($result == -1) {
-            $message = vips_error_buffer();
-            if (strpos($message, 'VipsOperation: class "webpsave" not found') === 0) {
-                throw new SystemRequirementsNotMetException(
-                    'Vips has not been compiled with webp support.'
-                );
-            }
-        }
+        // TODO: Should we also test if webp is available? (It seems not to be neccessary - it seems
+        // that webp be well intergrated part of vips)
     }
 
     /**
@@ -187,9 +162,6 @@ class Vips extends AbstractConverter
                 $options['Q'] = $this->options['near-lossless'];
             }
         }
-        if ($this->options['method'] !== 4) {
-            $options['reduction_effort'] = $this->options['method'];
-        }
 
         return $options;
     }
@@ -206,7 +178,6 @@ class Vips extends AbstractConverter
      */
     private function webpsave($im, $options)
     {
-        /** @scrutinizer ignore-call */ vips_error_buffer(); // clear error buffer
         $result = /** @scrutinizer ignore-call */ vips_call('webpsave', $im, $this->destination, $options);
 
         //trigger_error('test-warning', E_USER_WARNING);
@@ -219,13 +190,7 @@ class Vips extends AbstractConverter
             } elseif (preg_match("#(.*)\\sunsupported$#", $message, $matches)) {
                 // Actually, I am not quite sure if this ever happens.
                 // I got a "near_lossless unsupported" error message in a build, but perhaps it rather a warning
-                if (in_array($matches[1], [
-                    'lossless',
-                    'alpha_q',
-                    'near_lossless',
-                    'smart_subsample',
-                    'reduction_effort'
-                ])) {
+                if (in_array($matches[1], ['lossless', 'alpha_q', 'near_lossless', 'smart_subsample'])) {
                     $nameOfPropertyNotFound = $matches[1];
                 }
             }

@@ -15,39 +15,34 @@ use WebPConvert\WebPConvert;
 class Cropper
 {
     /** @var string */
-    private string $cachePath;
+    private $cachePath;
 
     /** @var string */
-    private string $imagePath;
+    private $imagePath;
 
     /** @var string */
-    private string $imageName;
+    private $imageName;
 
     /** @var string */
-    private string $imageMime;
+    private $imageMime;
 
     /** @var int */
-    private int $quality;
+    private $quality;
 
     /** @var int */
-    private int $compressor;
+    private $compressor;
 
     /**@var bool */
-    private bool $webP;
+    private $webP;
 
     /**
      * Allow jpg and png to thumb and cache generate
      * @var array allowed media types
      */
-    private static array $allowedExt = ['image/jpeg', "image/png"];
-
-    /** @var ConversionFailedException */
-    public ConversionFailedException $exception;
+    private static $allowedExt = ['image/jpeg', "image/png"];
 
     /**
      * Cropper constructor.
-     * compressor must be 1-9
-     * quality must be 1-100
      *
      * @param string $cachePath
      * @param int $quality
@@ -117,18 +112,16 @@ class Cropper
 
     /**
      * @param string $name
-     * @param int|null $width
-     * @param int|null $height
+     * @param int $width
+     * @param int $height
      * @return string
      */
     protected function name(string $name, int $width = null, int $height = null): string
     {
-        $filterName = mb_convert_encoding(htmlspecialchars(mb_strtolower(pathinfo($name)["filename"])), 'ISO-8859-1',
-            'UTF-8');
-        $formats = mb_convert_encoding('ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª',
-            'ISO-8859-1', 'UTF-8');
-        $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyrr                                 ';
-        $trimName = trim(strtr($filterName, $formats, $replace));
+        $filterName = filter_var(mb_strtolower(pathinfo($name)["filename"]), FILTER_SANITIZE_STRIPPED);
+        $formats = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
+        $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                 ';
+        $trimName = trim(strtr(utf8_decode($filterName), utf8_decode($formats), $replace));
         $name = str_replace(["-----", "----", "---", "--"], "-", str_replace(" ", "-", $trimName));
 
         $hash = $this->hash($this->imagePath);
@@ -183,18 +176,17 @@ class Cropper
         $cmp_y = $src_h / $height;
 
         if ($cmp_x > $cmp_y) {
-            $src_x = round(($src_w - ($src_w / $cmp_x * $cmp_y)) / 2);
             $src_w = round($src_w / $cmp_x * $cmp_y);
+            $src_x = round(($src_w - ($src_w / $cmp_x * $cmp_y))); //2
         } elseif ($cmp_y > $cmp_x) {
-            $src_y = round(($src_h - ($src_h / $cmp_y * $cmp_x)) / 2);
             $src_h = round($src_h / $cmp_y * $cmp_x);
+            $src_y = round(($src_h - ($src_h / $cmp_y * $cmp_x))); //2
         }
 
-        $height = (int)$height;
         $src_x = (int)$src_x;
-        $src_y = (int)$src_y;
-        $src_w = (int)$src_w;
         $src_h = (int)$src_h;
+        $src_y = (int)$src_y;
+        $src_y = (int)$src_y;
 
         if ($this->imageMime == "image/jpeg") {
             return $this->fromJpg($width, $height, $src_x, $src_y, $src_w, $src_h);
@@ -290,7 +282,6 @@ class Cropper
 
             return $webPConverted;
         } catch (ConversionFailedException $exception) {
-            $this->exception = $exception;
             return $image;
         }
     }

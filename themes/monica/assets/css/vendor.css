@@ -1,24 +1,4 @@
-/* ===================================================================
- * Monica Third-party Stylesheets
- * Template Ver. 1.0.0
- * 12-13-2022
- * -------------------------------------------------------------------
- *
- * TOC:
- * # PrismJS
- * # Swiper
- *
- * ------------------------------------------------------------------- */
 
-
-/* ===================================================================
- * # PrismJS 1.20.0
- *   https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+markup-templating+php 
- *   
- *   okaidia theme for JavaScript, CSS and HTML
- *   Loosely based on Monokai textmate theme by http://www.monokai.nl/
- *   @author ocodia
- * ------------------------------------------------------------------- */
 code[class*=language-],
 pre[class*=language-] {
   color          : #f8f8f2;
