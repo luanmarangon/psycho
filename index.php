@@ -52,6 +52,8 @@ $route->get("/empresa-social/{company_id}", "Company:socialMedia");
 
 //Peoples
 $route->get("/pessoas", "Peoples:home");
+$route->get("/pessoas/{people_id}", "Peoples:people");
+
 
 
 //Users
