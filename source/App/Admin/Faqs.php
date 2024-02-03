@@ -3,9 +3,11 @@
 
 namespace Source\App\Admin;
 
+use Source\Models\Faq;
 use Source\Core\Controller;
 
-class Faq extends Controller
+
+class Faqs extends Controller
 {
     public function __construct()
     {
@@ -14,6 +16,8 @@ class Faq extends Controller
 
     public function home()
     {
+        $faqs = (new Faq())->find()->fetch(true);
+
         
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -24,7 +28,8 @@ class Faq extends Controller
         );
 
         echo $this->view->render("faq", [
-            "head" => $head
+            "head" => $head,
+            "faqs" => $faqs
         ]);
     }
 }

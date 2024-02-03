@@ -10,6 +10,13 @@
 </head>
 
 <body>
+
+  <div class="ajax_load" style="z-index: 999;">
+    <div class="ajax_load_box">
+      <div class="ajax_load_box_circle"></div>
+      <p class="ajax_load_box_title">Aguarde, carregando...</p>
+    </div>
+  </div>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
     <!-- Sidebar Start -->
@@ -44,7 +51,7 @@
               <span class="hide-menu">Cadastros</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/empresa"); ?>" aria-expanded="false">
+              <a class="sidebar-link" href="<?= url("/admin/empresas"); ?>" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
@@ -96,7 +103,7 @@
               <span class="hide-menu">Usuários</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/usuarios");?>" aria-expanded="false">
+              <a class="sidebar-link" href="<?= url("/admin/usuarios"); ?>" aria-expanded="false">
                 <span>
                   <i class="ti ti-login"></i>
                 </span>
@@ -104,7 +111,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/novo-usuario");?>" aria-expanded="false">
+              <a class="sidebar-link" href="<?= url("/admin/novo-usuario"); ?>" aria-expanded="false">
                 <span>
                   <i class="ti ti-user-plus"></i>
                 </span>
@@ -191,9 +198,9 @@
         <?= $v->section("content"); ?>
       </div>
     </div>
-  </div> 
+  </div>
   <script src="<?= theme("/assets/scripts.js", CONF_VIEW_ADMIN); ?>"></script>
-    <?= $v->section("scripts"); ?>
+  <?= $v->section("scripts"); ?>
 </body>
 
 </html>

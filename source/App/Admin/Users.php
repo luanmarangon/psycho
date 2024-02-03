@@ -3,6 +3,7 @@
 
 namespace Source\App\Admin;
 
+use Source\Models\User;
 use Source\Core\Controller;
 
 class Users extends Controller
@@ -14,7 +15,9 @@ class Users extends Controller
 
     public function home()
     {
-        
+
+        $users = (new User())->findUser("level<10")->fetch(true);
+
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
             CONF_SITE_DESC,
@@ -24,7 +27,8 @@ class Users extends Controller
         );
 
         echo $this->view->render("user", [
-            "head" => $head
+            "head" => $head,
+            "users" => $users
         ]);
     }
 }

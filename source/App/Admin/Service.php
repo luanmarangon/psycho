@@ -4,8 +4,9 @@
 namespace Source\App\Admin;
 
 use Source\Core\Controller;
+use Source\Models\Services;
 
-class Servies extends Controller
+class Service extends Controller
 {
     public function __construct()
     {
@@ -14,6 +15,8 @@ class Servies extends Controller
 
     public function home()
     {
+
+        $services = (new Services())->find()->fetch(true);
         
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -24,7 +27,8 @@ class Servies extends Controller
         );
 
         echo $this->view->render("services", [
-            "head" => $head
+            "head" => $head,
+            "services" => $services
         ]);
     }
 }

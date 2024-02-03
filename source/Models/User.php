@@ -121,4 +121,41 @@ class User extends Model
         $this->data = ($this->findById($userId))->data();
         return true;
     }
+
+    public function findUser(?string $terms = null, ?string $params = null, string $columns = "*")
+    {
+        if ($terms) {
+            $this->query = "SELECT {$columns} FROM users u
+                                    JOIN psychologist py ON py.users_id = u.id
+                                    JOIN people p ON py.people_id = p.id
+                                    WHERE {$terms}";
+            parse_str($params, $this->params);
+            return $this;
+        }
+
+        $this->query = "SELECT {$columns} FROM users u 
+                                JOIN psychologist py ON py.users_id = u.id
+                                JOIN people p ON py.people_id = p.id";
+        return $this;
+    }
+
+    public function level($level)
+    {
+        switch ($level) {
+            case $level == 8:
+                $level = "Administrador";
+                break;
+            case $level == 6:
+                $level = "Psicologo (a)";
+                break;
+            case $level == 4:
+                $level = "Secretario";
+                break;
+            default:
+                $level = "Cliente";    
+                break;
+        }
+
+        return $level;
+    }
 }

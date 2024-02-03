@@ -10,6 +10,7 @@ if (strpos(url(), "localhost")) {
     $minCSS = new CSS();
     $minCSS->add(__DIR__ . "/../../../shared/styles/styles.css");
     $minCSS->add(__DIR__ . "/../../../shared/styles/boot.css");
+    $minCSS->add(__DIR__ . "/../../../shared/styles/ajax.css");
 
 
     //Theme CSS
@@ -29,6 +30,10 @@ if (strpos(url(), "localhost")) {
      */
     $minJS = new JS();
     $minJS->add(__DIR__ . "/../../../shared/scripts/jquery.min.js");
+    $minJS->add(__DIR__ . "/../../../shared/scripts/jquery.mask.min.js");
+    $minJS->add(__DIR__ . "/../../../shared/scripts/mask.js");
+    $minJS->add(__DIR__ . "/../../../shared/scripts/cep.js");
+    $minJS->add(__DIR__ . "/../../../shared/scripts/ajax.js");
     $minJS->add(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN. "/assets/libs/jquery/dist/jquery.min.js");
     $minJS->add(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN. "/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js");
     $minJS->add(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN. "/assets/libs/apexcharts/dist/apexcharts.min.js");

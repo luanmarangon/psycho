@@ -46,14 +46,26 @@ $route->get("/dashboard", "Dash:home");
 
 
 //Company
-$route->get("/empresa", "Company:home");
-$route->get("/empresa-social/{company_id}", "Company:socialMedia");
+$route->get("/empresas", "Company:home");
+$route->get("/empresa", "Company:company");
+$route->get("/empresa/{company_id}", "Company:company");
+
+//Company Social Media - Todas as Redes Sociais da Empresa
+$route->get("/empresa/{company_id}/redes-sociais", "Company:socialMedia");
+
+//Company Social Media - Individual, cadastro, alteração e exclusão
+$route->get("/empresa/{company_id}/redes-social", "Company:socialMediaCreate");
+$route->post("/empresa/{company_id}/redes-social", "Company:socialMediaCreate");
+$route->get("/empresa/{company_id}/redes-social/{socialMedia_id}", "Company:socialMediaCreate");
 
 
 //Peoples
 $route->get("/pessoas", "Peoples:home");
 $route->get("/pessoas/{people_id}", "Peoples:people");
 
+//PSichologist
+$route->get("/psicologas/{people_id}", "Peoples:psychologist");
+$route->get("/psicologas-sociail/{psycho_id}", "Peoples:socialMedia");
 
 
 //Users
@@ -61,14 +73,14 @@ $route->get("/usuarios", "Users:home");
 
 
 //Services
-$route->get("/servicos", "Services:home");
+$route->get("/servicos", "Service:home");
 
 
 //Blogs
 $route->get("/blog", "Blogs:home");
 
 //Faq's
-$route->get("/faq", "Faq:home");
+$route->get("/faq", "Faqs:home");
 
 
 

@@ -112,12 +112,6 @@ abstract class Model
         return $this->message;
     }
 
-    // public function join(string $table, string $condition): self
-    // {
-    //     $this->query .= " JOIN {$table} ON {$condition}";
-    //     return $this;
-    // }
-
     public function join(string $table, string $condition, ?string $where = null): self
     {
         $this->query .= " JOIN {$table} ON {$condition}";
@@ -170,11 +164,7 @@ abstract class Model
         return $find->fetch();
     }
 
-    public function findByProperties(int $id, string $columns = "*"): ?Model
-    {
-        $find = $this->find("properties_id = :id", "id={$id}", $columns);
-        return $find;
-    }
+    
     /**
      * @param string $columnOrder
      * @return Model

@@ -18,3 +18,8 @@ th {
     justify-content: space-around !important;
     /* margin-right: 10px;  */
 }
+
+th:first-child, td:first-child {
+    min-width: 20%;
+    max-width: 20%;
+}

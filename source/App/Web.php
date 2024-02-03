@@ -5,10 +5,11 @@ namespace Source\App;
 use Source\Models\Faq;
 use Source\Models\Blog;
 use Source\Core\Connect;
-use Source\Models\Company;
+
 use Source\Models\Contact;
 use Source\Core\Controller;
 use Source\Models\Services;
+use Source\Models\Companies;
 use Source\Models\SocialMedia;
 
 class Web extends Controller
@@ -16,39 +17,23 @@ class Web extends Controller
 
     public function __construct()
     {
+       
+        
         parent::__construct(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
+       
 
-
-                // COLOCANDO PARA TESTE DE CONEXAO DE BCO DE DADOS
+        // COLOCANDO PARA TESTE DE CONEXAO DE BCO DE DADOS
         //    Connect::getInstance();
 
         //COLOCANDO O SISTEMA EM MANUTENÇÃO
         //    redirect("/ops/manutencao");
 
         //consulta Contato
-        $mail = (new Company())->find("id = :id", "id=1", "mail1, mail2")->fetch(true);
-        $phone = (new Company())->find("id = :id", "id=1", "phone1, phone2")->fetch(true);
-
-        // define("CONF_COMPANY_MAIL", $mail);
-        // define("CONF_COMPANY_PHONE", $phone);
-
-        // $mail = (new Company())->find("id = :id", "id=1", "mail1, mail2")->fetch(true);
-        // $phone = (new Company())->find("id = :id", "id=1", "phone1, phone2")->fetch(true);
-
-        // // Convertendo os arrays em strings JSON
-        // $mailJson = json_encode($mail);
-        // $phoneJson = json_encode($phone);
-
-        // // Criando constantes com os valores JSON
-        // define("CONF_COMPANY_MAIL", $mailJson);
-        // define("CONF_COMPANY_PHONE", $phoneJson);
-
-        // var_dump($phone);
-
-
+        $mail = (new Companies())->find("id = :id", "id=1", "mail1, mail2")->fetch(true);
+        $phone = (new Companies())->find("id = :id", "id=1", "phone1, phone2")->fetch(true);
 
         //consulta Redes Sociais.
-        $socialMediaCompany = (new Company())->companySocialMeida(1)->fetch(true);
+        $socialMediaCompany = (new Companies())->companySocialMeida(1)->fetch(true);
         $facebook = $instagram = $linkedin = $twitter = NULL; // Inicialize as variáveis fora do loop
 
         foreach ($socialMediaCompany as $key) {
@@ -160,8 +145,8 @@ class Web extends Controller
 
     public function contact()
     {
-        $mail1 = (new Company())->find("id = :id", "id=1", "mail1")->fetch();
-        $mail2 = (new Company())->find("id = :id", "id=1", "mail2")->fetch();
+        $mail1 = (new Companies())->find("id = :id", "id=1", "mail1")->fetch();
+        $mail2 = (new Companies())->find("id = :id", "id=1", "mail2")->fetch();
 
 
         // var_dump($mail1);
@@ -175,7 +160,7 @@ class Web extends Controller
 
 
 
-        $phone = (new Company())->find("id = :id", "id=1", "phone1, phone2")->fetch(true);
+        $phone = (new Companies())->find("id = :id", "id=1", "phone1, phone2")->fetch(true);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,

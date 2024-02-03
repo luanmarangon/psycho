@@ -6,7 +6,7 @@
       <h5 class="card-title fw-semibold mb-4">Empresa</h5>
       <div class="card">
         <div class="card-body">
-          <a href="#" class="ti ti-user-plus btn btn-primary"> Novo</a>
+          <a href="<?= url("/admin/empresa"); ?>" class="ti ti-user-plus btn btn-primary"> Novo</a>
         </div>
       </div>
       <table>
@@ -19,11 +19,10 @@
         <?php foreach ($company as $key) : ?>
           <tr>
             <td><?= $key->socialReason; ?></td>
-            <td><?= $key->cnpj; ?></td>
+            <td class="mask-cnpj"><?= $key->cnpj; ?></td>
             <td class="tableButton">
-              <a href="#" class="btn btn-outline-success"> Visualizar</a>
-              <a href="#" class="btn btn-outline-secondary"> Editar</a>
-              <a href="<?= url("/admin/empresa-social/{$key->id}"); ?>" class="btn btn-outline-primary"> Redes Sociais</a>
+              <a href="<?= url("/admin/empresa/$key->id"); ?>" class="btn btn-outline-success">Editar</a>
+              <a href="<?= url("/admin//empresa/{$key->id}/redes-sociais"); ?>" class="btn btn-outline-primary"> Redes Sociais</a>
             </td>
           </tr>
         <?php endforeach; ?>

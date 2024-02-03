@@ -7,7 +7,7 @@
 
       <div class="card">
         <div class="card-body">
-
+        <a href="#" class="btn btn-primary">Novo</a>
         </div>
       </div>
 

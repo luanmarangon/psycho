@@ -4,6 +4,7 @@
 namespace Source\App\Admin;
 
 use Source\Core\Controller;
+use Source\Models\Blog;
 
 class Blogs extends Controller
 {
@@ -14,6 +15,7 @@ class Blogs extends Controller
 
     public function home()
     {
+        $blogs = (new Blog())->find()->fetch(true);
         
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -24,7 +26,8 @@ class Blogs extends Controller
         );
 
         echo $this->view->render("blogs", [
-            "head" => $head
+            "head" => $head,
+            "blogs" => $blogs
         ]);
     }
 }

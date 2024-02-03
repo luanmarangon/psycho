@@ -4,26 +4,34 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title fw-semibold mb-4">Usuários do Sistema</h5>
+
       <div class="card">
         <div class="card-body">
-          <form>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+          <a href="#" class="btn btn-primary">Novo</a>
         </div>
       </div>
+
+      <div class="row">
+
+        <?php foreach ($users as $key) : ?>
+
+          <div class="col-md-4">
+            <!-- <h5 class="card-title fw-semibold mb-4">Titles, text, and links</h5> -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> <?= $key->firstName; ?> <?= $key->lastName; ?></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Login: <?= $key->username; ?></h6>
+                <h6 class="card-subtitle mb-2 text-muted">Nivel: <?= $key->level($key->level); ?></h6>
+                <a href="<?= url("/admin/pessoas/$key->id"); ?>" class="card-link">Visualizar</a>
+              </div>
+            </div>
+          </div>
+
+        <?php endforeach; ?>
+      </div>
+
+
+
       <!-- <h5 class="card-title fw-semibold mb-4">Disabled forms</h5> -->
       <!-- <div class="card mb-0">
         <div class="card-body">
