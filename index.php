@@ -48,7 +48,9 @@ $route->get("/dashboard", "Dash:home");
 //Company
 $route->get("/empresas", "Company:home");
 $route->get("/empresa", "Company:company");
+$route->post("/empresa", "Company:company");
 $route->get("/empresa/{company_id}", "Company:company");
+$route->post("/empresa/{company_id}", "Company:company");
 
 //Company Social Media - Todas as Redes Sociais da Empresa
 $route->get("/empresa/{company_id}/redes-sociais", "Company:socialMedia");
@@ -57,14 +59,24 @@ $route->get("/empresa/{company_id}/redes-sociais", "Company:socialMedia");
 $route->get("/empresa/{company_id}/redes-social", "Company:socialMediaCreate");
 $route->post("/empresa/{company_id}/redes-social", "Company:socialMediaCreate");
 $route->get("/empresa/{company_id}/redes-social/{socialMedia_id}", "Company:socialMediaCreate");
+$route->post("/empresa/{company_id}/redes-social/{socialMedia_id}", "Company:socialMediaCreate");
 
 
 //Peoples
 $route->get("/pessoas", "Peoples:home");
-$route->get("/pessoas/{people_id}", "Peoples:people");
+$route->get("/pessoa", "Peoples:people");
+$route->post("/pessoa", "Peoples:people");
+$route->get("/pessoa/{people_id}", "Peoples:people");
+$route->post("/pessoa/{people_id}", "Peoples:people");
 
 //PSichologist
-$route->get("/psicologas/{people_id}", "Peoples:psychologist");
+$route->get("/psicologas", "Peoples:psychologist");
+$route->post("/psicologas", "Peoples:psychologist");
+// $route->get("/psicologas/{people_id}", "Peoples:psychologist");
+// $route->get("/psicologas/{psycho_id}", "Peoples:psychologist");
+$route->get("/pessoa/{people_id}/novo-psicologo", "Peoples:psychologist");
+$route->get("/pessoa/{people_id}/psicologo/{psycho_id}", "Peoples:psychologist");
+
 $route->get("/psicologas-sociail/{psycho_id}", "Peoples:socialMedia");
 
 

@@ -53,10 +53,9 @@
                 <a href="<?= url("/admin/empresa/{$company->id}/redes-social"); ?>" class="ti ti-user-plus btn btn-primary"> Novo</a>
               </div>
               <div class="mb-3 col-6 d-flex justify-content-end">
-                <form action="<?= url("/admin/empresa/$company->id/redes-social"); ?>" method="post">
+                <form action="<?= url("/admin/empresa/$company->id/redes-social/$socialCompany->id"); ?>" method="post">
                   <!--ACTION SPOOFING-->
                   <input type="hidden" name="action" value="delete" />
-                  <input type="hidden" name="socialMedia_id" value="<?= $socialCompany->id; ?>" />
                   <button class="btn btn-danger">Excluir</button>
                 </form>
               </div>

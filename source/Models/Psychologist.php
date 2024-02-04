@@ -8,7 +8,7 @@ class Psychologist extends Model
 {
     public function __construct()
     {
-        parent::__construct("psychologist", ["id"], ["people_id", "users_id", "crp", "standard"]);
+        parent::__construct("psychologist", ["id"], ["people_id", "users_id", "crp", "registration"]);
     }
 
     public function psychologistSocialMeida(int $psycologistId)

@@ -16,3 +16,55 @@
   .justify{
     text-align: justify;
   }
+
+
+  /* Estilo padrão para o checkbox */
+input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  outline: none;
+  display: flex; /* Adiciona display flex */
+  align-items: center; /* Centraliza verticalmente */
+  align-self: center;
+}
+
+/* Estilo do checkbox quando marcado */
+input[type="checkbox"]:checked {
+  background-color: #2196F3; /* Cor de fundo quando marcado */
+  border-color: #2196F3; /* Cor da borda quando marcado */
+}
+
+/* Estilo da marcação dentro do checkbox */
+input[type="checkbox"]:checked::before {
+  content: '\2713'; /* Código Unicode para o marcador de seleção (✓) */
+  font-size: 12px;
+  color: #fff; /* Cor do marcador quando marcado */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*Deixar na mesma linha o CheckBox*/
+.checkbox-wrapper {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+}
+.checkbox-wrapper > input{
+  margin-left: 5px;
+}
+
+.inactivePeople {
+  color: red !important;
+}
+
+.activePeople{
+  color: green !important;
+}

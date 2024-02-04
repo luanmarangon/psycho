@@ -14,24 +14,18 @@ class User extends Model
      */
     public function __construct()
     {
-        parent::__construct("users", ["id"], ["first_name", "last_name", "email", "password", "level", "office"]);
+        parent::__construct("users", ["id"], ["username", "password", "level"]);
     }
 
 
     public function bootstrap(
-        string $firstName,
-        string $lastName,
-        string $email,
+        string $username,
         string $password,
-        string $level,
-        string $office
+        string $level
     ): User {
-        $this->first_name = $firstName;
-        $this->last_name = $lastName;
-        $this->email = $email;
+        $this->username = $username;
         $this->password = $password;
         $this->level = $level;
-        $this->office = $office;
         return $this;
     }
 
@@ -41,9 +35,14 @@ class User extends Model
      * @param string $columns
      * @return null|User
      */
-    public function findByEmail(string $email, string $columns = "*"): ?User
+    // public function findByEmail(string $email, string $columns = "*"): ?User
+    // {
+    //     $find = $this->find("email = :email", "email={$email}", $columns);
+    //     return $find->fetch();
+    // }
+    public function findByLogin(string $username, string $columns = "*"): ?User
     {
-        $find = $this->find("email = :email", "email={$email}", $columns);
+        $find = $this->find("username = :username", "username={$username}", $columns);
         return $find->fetch();
     }
 
@@ -70,14 +69,14 @@ class User extends Model
     public function save(): bool
     {
         if (!$this->required()) {
-            $this->message->warning("Nome, sobrenome, email e senha são obrigatórios");
+            $this->message->warning("Usuário e senha são obrigatórios");
             return false;
         }
 
-        if (!is_email($this->email)) {
-            $this->message->warning("O e-mail informado não tem um formato válido");
-            return false;
-        }
+        // if (!is_email($this->email)) {
+        //     $this->message->warning("O e-mail informado não tem um formato válido");
+        //     return false;
+        // }
 
         if (!is_passwd($this->password)) {
             $min = CONF_PASSWD_MIN_LEN;
@@ -92,10 +91,10 @@ class User extends Model
         if (!empty($this->id)) {
             $userId = $this->id;
 
-            if ($this->find("email = :e AND id != :i", "e={$this->email}&i={$userId}", "id")->fetch()) {
-                $this->message->warning("O e-mail informado já está cadastrado");
-                return false;
-            }
+            // if ($this->find("email = :e AND id != :i", "e={$this->email}&i={$userId}", "id")->fetch()) {
+            //     $this->message->warning("O e-mail informado já está cadastrado");
+            //     return false;
+            // }
 
             $this->update($this->safe(), "id = :id", "id={$userId}");
             if ($this->fail()) {
@@ -106,8 +105,8 @@ class User extends Model
 
         /** User Create */
         if (empty($this->id)) {
-            if ($this->findByEmail($this->email, "id")) {
-                $this->message->warning("O e-mail informado já está cadastrado");
+            if ($this->findByLogin($this->username, "id")) {
+                $this->message->warning("O Login informado já está cadastrado");
                 return false;
             }
 
@@ -152,7 +151,7 @@ class User extends Model
                 $level = "Secretario";
                 break;
             default:
-                $level = "Cliente";    
+                $level = "Cliente";
                 break;
         }
 

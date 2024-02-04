@@ -22,7 +22,7 @@
             <td class="mask-cnpj"><?= $key->cnpj; ?></td>
             <td class="tableButton">
               <a href="<?= url("/admin/empresa/$key->id"); ?>" class="btn btn-outline-success">Editar</a>
-              <a href="<?= url("/admin//empresa/{$key->id}/redes-sociais"); ?>" class="btn btn-outline-primary"> Redes Sociais</a>
+              <a href="<?= url("/admin/empresa/{$key->id}/redes-sociais"); ?>" class="btn btn-outline-primary"> Redes Sociais</a>
             </td>
           </tr>
         <?php endforeach; ?>

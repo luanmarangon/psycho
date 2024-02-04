@@ -365,6 +365,11 @@ function passwd_rehash(string $hash): bool
     return password_needs_rehash($hash, CONF_PASSWD_ALGO, CONF_PASSWD_OPTION);
 }
 
+function passwd_genered(string $hash)
+{
+    
+}
+
 /**
  * ##################
  * ###   REQUEST ####
