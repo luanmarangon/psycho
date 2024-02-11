@@ -62,7 +62,7 @@ class People extends Model
     public function psycho($peopleId)
     {
         if ($peopleId) {
-            return (new People())->findById($peopleId);
+            return (new Psychologist())->find("people_id = {$peopleId}")->fetch();
         }
         return null;
     }

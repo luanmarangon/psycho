@@ -27,38 +27,41 @@ class Login extends Controller
     public function login(?array $data): void
     {
 
-        // $user = Auth::user();
+        var_dump($data);
+        // exit();
 
-        // if ($user && $user->level >= 5) {
-        //     redirect("/admin/dash");
-        // }
+        $user = Auth::user();
 
-        // if (!empty($data["email"]) && !empty($data["password"])) {
+        if ($user && $user->level >= 5) {
+            redirect("/admin/dashboard");
+        }
 
-        //     //VALIDAÇÃO DE VARIAS TENTATIVAS
-        //     if (request_limit("loginlogin", 3, 60 * 5)) {
-        //         $json["message"] = $this->message->error("ACESSO NEGADO: Aguarde por 05 minutos para tentar novamente")->render();
-        //         echo json_encode($json);
-        //         return;
-        //     }
+        if (!empty($data["login"]) && !empty($data["password"])) {
 
-        //     $auth = new Auth();
-        //     $login = $auth->login($data["email"], $data["password"], true, 5);
+            //VALIDAÇÃO DE VARIAS TENTATIVAS
+            // if (request_limit("loginlogin", 3, 60 * 5)) {
+            //     $json["message"] = $this->message->error("ACESSO NEGADO: Aguarde por 05 minutos para tentar novamente")->render();
+            //     echo json_encode($json);
+            //     return;
+            // }
 
-        //     if ($login) {
-        //         $json["redirect"] = url("/admin/dash");
-        //     } else {
-        //         $json["message"] = $auth->message()->render();
-        //     }
+            $auth = new Auth();
+            $login = $auth->login($data["login"], $data["password"], true, 5);
 
-        //     echo json_encode($json);
+            if ($login) {
+                $json["redirect"] = url("/admin/dashboard");
+            } else {
+                $json["message"] = $auth->message()->render();
+            }
+
+            echo json_encode($json);
+            return;
+
+
+
+
         //     return;
-
-
-
-
-        //     return;
-        // }
+        }
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -69,7 +72,8 @@ class Login extends Controller
         );
 
         echo $this->view->render("authentication-login", [
-            "head" => $head
+            "head" => $head,
+            "cookie" => filter_input(INPUT_COOKIE, "authEmail")
         ]);
     }
 

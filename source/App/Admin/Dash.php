@@ -4,6 +4,7 @@
 namespace Source\App\Admin;
 
 use Source\Core\Controller;
+use Source\Models\Auth;
 
 class Dash extends Controller
 {
@@ -14,7 +15,7 @@ class Dash extends Controller
 
     public function home()
     {
-        
+
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
             CONF_SITE_DESC,

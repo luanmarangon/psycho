@@ -22,14 +22,17 @@
                   <img src="<?= theme("/assets/images/logos/dark-logo.svg", CONF_VIEW_ADMIN); ?>" width="180" alt="">
                 </a>
                 <p class="text-center"><?= CONF_SITE_NAME; ?></p>
-                <form>
+                <form action="<?= url("/admin/login") ?>" method="post" enctype="multipart/form-data">
+                  <div class="ajax_response"><?= flash(); ?></div>
+                  <?= csrf_input(); ?>
+
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Usuário</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="text" class="form-control" name="login">
                   </div>
                   <div class="mb-4">
                     <label for="exampleInputPassword1" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" class="form-control" name="password">
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
@@ -40,7 +43,7 @@
                     </div>
                     <a class="text-primary fw-bold" href="./index.html">Esqueceu sua senha ?</a>
                   </div>
-                  <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Entrar</a>
+                  <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Entrar</button>
                   <div class="d-flex align-items-center justify-content-center">
                     <p class="fs-4 mb-0 fw-bold">Novo por aqui?</p>
                     <a class="text-primary fw-bold ms-2" href="<?= url("/admin/cadastro"); ?>">Crie a sua conta aqui</a>

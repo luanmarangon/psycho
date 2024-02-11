@@ -71,17 +71,33 @@ $route->post("/pessoa/{people_id}", "Peoples:people");
 
 //PSichologist
 $route->get("/psicologas", "Peoples:psychologist");
-$route->post("/psicologas", "Peoples:psychologist");
+// $route->post("/psicologas", "Peoples:psychologist");
 // $route->get("/psicologas/{people_id}", "Peoples:psychologist");
 // $route->get("/psicologas/{psycho_id}", "Peoples:psychologist");
-$route->get("/pessoa/{people_id}/novo-psicologo", "Peoples:psychologist");
-$route->get("/pessoa/{people_id}/psicologo/{psycho_id}", "Peoples:psychologist");
+$route->get("/pessoa/{people_id}/novo-psicologo", "Peoples:psychologistCreate");
+$route->post("/pessoa/{people_id}/novo-psicologo", "Peoples:psychologistCreate");
+$route->post("/psicologo/{psycho_id}", "Peoples:psychologistCreate");
+$route->get("/psicologo/{psycho_id}", "Peoples:psychologist");
+// $route->post("/psicologo/{psycho_id}", "Peoples:psychologist");
 
-$route->get("/psicologas-sociail/{psycho_id}", "Peoples:socialMedia");
+$route->get("/psicologo/{psycho_id}/redes-sociais", "Peoples:socialMedia");
+$route->get("/psicologo/{psycho_id}/nova-rede-social", "Peoples:socialMediaPsycho");
+$route->post("/psicologo/{psycho_id}/nova-rede-social", "Peoples:socialMediaPsycho");
+$route->get("/psicologo/{psycho_id}/rede-social/{socialMedia_id}", "Peoples:socialMediaPsycho");
+$route->post("/psicologo/{psycho_id}/rede-social", "Peoples:socialMediaPsycho");
 
 
 //Users
 $route->get("/usuarios", "Users:home");
+$route->get("/usuarios/{user_id}", "Users:user");
+$route->get("/usuarios/{user_id}/nova-senha", "Users:userPasswd");
+$route->get("/usuarios/{user_id}/inativar", "Users:user");
+// $route->post("/usuarios/{user_id}", "Users:user");
+
+$route->get("/perfil", "Users:profile");
+$route->post("/perfil", "Users:profile");
+
+
 
 
 //Services

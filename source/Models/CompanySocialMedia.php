@@ -9,7 +9,7 @@ class CompanySocialMedia extends Model
 
     public function __construct()
     {
-        parent::__construct("companysocialmedia", [], ["company_id", "socialMedia_id"]);
+        parent::__construct("companysocialmedia", ["id"], ["company_id", "socialMedia_id"]);
     }
 
     public function companyMedia(int $socialMediaId)

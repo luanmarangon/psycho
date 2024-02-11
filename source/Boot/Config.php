@@ -137,7 +137,7 @@ define("CONF_MAIL_HOST", "sandbox.smtp.mailtrap.io");
 define("CONF_MAIL_PORT", "2525");
 define("CONF_MAIL_USER", "7ed1ac69ecb34d");
 define("CONF_MAIL_PASS", "e290026f5a3105");
-define("CONF_MAIL_SENDER", ["name" => "IMOB", "address" => "luan.limarangon@hotmail.com"]);
+define("CONF_MAIL_SENDER", ["name" => "Psycho", "address" => "luan.limarangon@hotmail.com"]);
 define("CONF_MAIL_SUPPORT", "luan.limarangon@hotmail.com");
 define("CONF_MAIL_OPTION_LANG", "br");
 define("CONF_MAIL_OPTION_HTML", true);

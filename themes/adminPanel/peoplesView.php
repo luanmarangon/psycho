@@ -141,11 +141,10 @@
             <div class="row">
               <div class="mb-3 col-6">
                 <?php if ($psycho) : ?>
-                  <a href="<?= url("/admin/pessoa/$people->peopleId/psicologo/{$people->psycho($people->peopleId)->id}"); ?>" class="btn btn-success">Psicologa</a>
-
+                  <a href="<?= url("/admin/psicologo/{$people->psycho($people->peopleId)->id}"); ?>" class="btn btn-success">Psicologa</a>
                 <?php else : ?>
                   <!-- <a href="<?= url("/admin/psicologas") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Psicologo (a)</a> -->
-                  <a href="<?= url("/admin/pessoa/$people->peopleId/psicologo/{psycho_id}") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Psicologo (a)</a>
+                  <a href="<?= url("/admin/pessoa/$people->peopleId/novo-psicologo") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Psicologo (a)</a>
                   <!-- <a href="<?= url("/admin/psicologas?people_id={$people->peopleId}") ?>"  class="btn btn-primary">Novo Psicologo (a)</a> -->
 
                   <!-- <a href="#" class="btn btn-green icon-warning" 

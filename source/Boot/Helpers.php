@@ -365,9 +365,14 @@ function passwd_rehash(string $hash): bool
     return password_needs_rehash($hash, CONF_PASSWD_ALGO, CONF_PASSWD_OPTION);
 }
 
-function passwd_genered(string $hash)
+function passwd_genered($size = 20)
 {
-    
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
+    $passwdGenered = '';
+    for ($i = 0; $i < $size; $i++) {
+        $passwdGenered .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $passwdGenered;
 }
 
 /**

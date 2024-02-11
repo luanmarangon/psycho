@@ -13,11 +13,19 @@ class Psychologist extends Model
 
     public function psychologistSocialMeida(int $psycologistId)
     {
-        $this->query = "SELECT sm.socialMedia, sm.link FROM psychologist py
+        $this->query = "SELECT sm.id, sm.socialMedia, sm.link FROM psychologist py
                         JOIN psychologistsocialmedia psm ON py.id = psm.psychologist_id
                         JOIN socialMedia sm ON psm.socialMedia_id = sm.id
                         WHERE py.id = {$psycologistId}";
 
         return $this;
+    }
+
+    public function userPsycho($psychoId)
+    {
+        if ($psychoId) {
+            return (new User())->find("id = {$psychoId}")->fetch();
+        }
+        return null;
     }
 }

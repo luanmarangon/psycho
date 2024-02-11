@@ -3,7 +3,7 @@
         'name' => 'luanmarangon/psycho',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'a57fb788219445f52ffe11b90c1d39c7c461076c',
+        'reference' => '6ee61084d3772ff645534de49f4f30831bd7e304',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'luanmarangon/psycho' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'a57fb788219445f52ffe11b90c1d39c7c461076c',
+            'reference' => '6ee61084d3772ff645534de49f4f30831bd7e304',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

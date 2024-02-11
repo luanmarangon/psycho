@@ -76,15 +76,15 @@ class Auth extends Model
      * @param int $level
      * @return boolean
      */
-    public function login(string $email, string $password, bool $save = false, int $level = 1): bool
+    public function login(string $login, string $password, bool $save = false, int $level = 1): bool
     {
-        if (!is_email($email)) {
-            $this->message->warning("O e-mail informado não é valido");
-            return false;
-        }
+        // if (!is_email($login)) {
+        //     $this->message->warning("O e-mail informado não é valido");
+        //     return false;
+        // }
 
         if ($save) {
-            setcookie("authEmail", $email, time() + 604800, "/");
+            setcookie("authEmail", $login, time() + 604800, "/");
         } else {
             setcookie("authEmail", null, time() - 3600, "/");
         }
@@ -94,7 +94,7 @@ class Auth extends Model
             return false;
         }
 
-        $user = (new User())->findByEmail($email);
+        $user = (new User())->find("username = :u", "u=$login")->fetch();
 
         if (!$user) {
             $this->message->error("O e-mail informado não está cadastrado");

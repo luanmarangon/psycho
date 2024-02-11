@@ -123,18 +123,25 @@ class User extends Model
 
     public function findUser(?string $terms = null, ?string $params = null, string $columns = "*")
     {
-        if ($terms) {
-            $this->query = "SELECT {$columns} FROM users u
-                                    JOIN psychologist py ON py.users_id = u.id
-                                    JOIN people p ON py.people_id = p.id
-                                    WHERE {$terms}";
-            parse_str($params, $this->params);
-            return $this;
-        }
+        // if ($terms) {
+        //     $this->query = "SELECT {$columns} FROM users u
+        //                             JOIN psychologist py ON py.users_id = u.id
+        //                             JOIN people p ON py.people_id = p.id
+        //                             WHERE {$terms}";
+        //     parse_str($params, $this->params);
+        //     return $this;
+        // }
 
-        $this->query = "SELECT {$columns} FROM users u 
-                                JOIN psychologist py ON py.users_id = u.id
-                                JOIN people p ON py.people_id = p.id";
+        // $this->query = "SELECT {$columns} FROM users u 
+        //                         JOIN psychologist py ON py.users_id = u.id
+        //                         JOIN people p ON py.people_id = p.id";
+        // return $this;
+
+        $this->query = "SELECT u.id AS usersId, u.*, e.*, py.*, p.* FROM people p
+                            LEFT JOIN psychologist py ON p.id = py.people_id
+                            LEFT JOIN employee e ON p.id = e.people_id
+                            LEFT JOIN users u ON u.id = COALESCE(py.users_id, e.users_id)";
+
         return $this;
     }
 
@@ -156,5 +163,17 @@ class User extends Model
         }
 
         return $level;
+    }
+
+    public function userPeople($userId)
+    {
+
+        $this->query = "SELECT u.id AS userId, p.*, py.*, e.*, u.* FROM people p
+                            LEFT JOIN psychologist py ON p.id = py.people_id
+                            LEFT JOIN employee e ON p.id = e.people_id
+                            LEFT JOIN users u ON u.id = COALESCE(py.users_id, e.users_id)
+                            WHERE u.id = $userId";
+
+        return $this;
     }
 }
