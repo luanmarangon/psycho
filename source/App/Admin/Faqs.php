@@ -4,10 +4,9 @@
 namespace Source\App\Admin;
 
 use Source\Models\Faq;
-use Source\Core\Controller;
+use Source\App\Admin\Admin;
 
-
-class Faqs extends Controller
+class Faqs extends Admin
 {
     public function __construct()
     {

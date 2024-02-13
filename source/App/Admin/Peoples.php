@@ -6,13 +6,13 @@ namespace Source\App\Admin;
 use Source\Models\User;
 use Source\Models\People;
 use Source\Models\Address;
-use Source\Core\Controller;
-use Source\Models\Psychologist;
-use Source\Models\PsychologistSocialMedia;
-use Source\Models\SettingsGenre;
+use Source\App\Admin\Admin;
 use Source\Models\SocialMedia;
+use Source\Models\Psychologist;
+use Source\Models\SettingsGenre;
+use Source\Models\PsychologistSocialMedia;
 
-class Peoples extends Controller
+class Peoples extends Admin
 {
     public function __construct()
     {

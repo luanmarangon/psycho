@@ -3,10 +3,10 @@
 
 namespace Source\App\Admin;
 
-use Source\Core\Controller;
 use Source\Models\Blog;
+use Source\App\Admin\Admin;
 
-class Blogs extends Controller
+class Blogs extends Admin
 {
     public function __construct()
     {

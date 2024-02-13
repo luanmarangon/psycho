@@ -16,25 +16,25 @@ class Login extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->level >= 5) {
-            redirect("/admin/dash");
-        } else {
+        // if ($user && $user->level >= 5) {
+            // redirect("/admin/dash");
+        // } else {
             redirect("/admin/login");
-        }
+        // }
 
     }
 
     public function login(?array $data): void
     {
 
-        var_dump($data);
+        // var_dump($data);
         // exit();
 
         $user = Auth::user();
 
-        if ($user && $user->level >= 5) {
-            redirect("/admin/dashboard");
-        }
+        // if ($user && $user->level >= 5) {
+        //     redirect("/admin/dashboard");
+        // }
 
         if (!empty($data["login"]) && !empty($data["password"])) {
 

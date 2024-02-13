@@ -3,12 +3,12 @@
 
 namespace Source\App\Admin;
 
-use Source\Models\User;
-use Source\Core\Controller;
 use Source\Models\Auth;
+use Source\Models\User;
 use Source\Support\Email;
+use Source\App\Admin\Admin;
 
-class Users extends Controller
+class Users extends Admin
 {
     public function __construct()
     {
@@ -183,9 +183,7 @@ class Users extends Controller
             $userUpdate = (new User())->findById($user->id);
             $userUpdate->username = $data['username'];
 
-            if (empty($data['password']) || empty($data['confpassword'])) {
-                echo "Por favor, preencha ambos os campos de senha.";
-            } else {
+            if (!empty($data['password']) || !empty($data['confpassword'])) {
                 if ($data['password'] === $data['confpassword']) {
                     $userUpdate->password = $data['password'];
                     echo "Senhas iguais.";
@@ -193,16 +191,36 @@ class Users extends Controller
                     echo "As senhas digitadas são diferentes.";
                 }
             }
-            
+            if ($userUpdate->id != Auth::user()->id) {
+                //Retorno
+                return;
+            }
 
-            var_dump($user, $data);
+            
+            if (!$userUpdate->save()) {
+                $json["message"] = $userUpdate->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+           
+
+
+
+
+
+            var_dump($data);
+            var_dump(Auth::user()->username);
 
             var_dump($userUpdate);
 
 
 
 
-            exit();
+            // exit();
+
+            $this->message->success("Usuário Atualizado com sucesso...")->flash();
+            redirect(url("/admin/perfil"));
         }
 
 

@@ -3,13 +3,13 @@
 
 namespace Source\App\Admin;
 
-use Source\Core\Controller;
 use Source\Models\Address;
+use Source\App\Admin\Admin;
 use Source\Models\Companies;
-use Source\Models\CompanySocialMedia;
 use Source\Models\SocialMedia;
+use Source\Models\CompanySocialMedia;
 
-class Company extends Controller
+class Company extends Admin
 {
     public function __construct()
     {
@@ -38,7 +38,7 @@ class Company extends Controller
     public function company(array $data)
     {
 
-      
+
         //create 
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -174,7 +174,7 @@ class Company extends Controller
 
             $companies = (new Companies())->find()->count();
 
-            if ($companies == 1){
+            if ($companies == 1) {
                 $this->message->success("A exclusão da Empresa não está autorizada.")->flash();
                 redirect(url("/admin/empresas"));
             }

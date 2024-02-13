@@ -3,10 +3,10 @@
 
 namespace Source\App\Admin;
 
-use Source\Core\Controller;
 use Source\Models\Auth;
+use Source\App\Admin\Admin;
 
-class Dash extends Controller
+class Dash extends Admin
 {
     public function __construct()
     {
