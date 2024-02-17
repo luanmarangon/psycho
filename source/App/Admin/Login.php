@@ -4,6 +4,7 @@ namespace Source\App\Admin;
 
 use Source\Models\Auth;
 use Source\Core\Controller;
+use Source\Models\licenses;
 
 class Login extends Controller
 {
@@ -17,9 +18,9 @@ class Login extends Controller
         $user = Auth::user();
 
         // if ($user && $user->level >= 5) {
-            // redirect("/admin/dash");
+        // redirect("/admin/dash");
         // } else {
-            redirect("/admin/login");
+        redirect("/admin/login");
         // }
 
     }
@@ -45,22 +46,30 @@ class Login extends Controller
             //     return;
             // }
 
+
+
             $auth = new Auth();
             $login = $auth->login($data["login"], $data["password"], true, 5);
 
-            if ($login) {
-                $json["redirect"] = url("/admin/dashboard");
-            } else {
-                $json["message"] = $auth->message()->render();
+            $license = (new licenses())->find("expiration >= date(now())")->fetch(true);
+
+            // var_dump($license);
+            // exit();
+
+            if (!$license) {
+                $this->message->error("Acesso indisponivel, por favor entrar em contato com o administrador.")->flash();
+                redirect(url("/admin/login"));
             }
 
-            echo json_encode($json);
+            if ($login) {
+                $this->message->success("Login efetuado com sucesso...")->flash();
+                redirect(url("/admin/dashboard"));
+            } else {
+                $this->message->warning($auth->message())->flash();
+                redirect(url("/admin/login"));
+            }
+
             return;
-
-
-
-
-        //     return;
         }
 
         $head = $this->seo->render(
@@ -92,5 +101,16 @@ class Login extends Controller
         echo $this->view->render("authentication-register", [
             "head" => $head
         ]);
+    }
+
+
+    public function logoff(): void
+    {
+        $this->message->success("Você saiu com sucesso....")->flash();
+        // $this->message->success("Você saiu com sucesso {$this->user->first_name}")->flash();
+
+        Auth::logout();
+
+        redirect("/admin/login");
     }
 }

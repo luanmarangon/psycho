@@ -121,7 +121,7 @@ class User extends Model
         return true;
     }
 
-    public function findUser(?string $terms = null, ?string $params = null, string $columns = "*")
+    public function findUser(?string $where = null)
     {
         // if ($terms) {
         //     $this->query = "SELECT {$columns} FROM users u
@@ -137,10 +137,15 @@ class User extends Model
         //                         JOIN people p ON py.people_id = p.id";
         // return $this;
 
-        $this->query = "SELECT u.id AS usersId, u.*, e.*, py.*, p.* FROM people p
+        $this->query = "SELECT u.id AS usersId, p.id AS peopleId, u.*, e.*, py.*, p.* FROM people p
                             LEFT JOIN psychologist py ON p.id = py.people_id
                             LEFT JOIN employee e ON p.id = e.people_id
                             LEFT JOIN users u ON u.id = COALESCE(py.users_id, e.users_id)";
+
+        if ($where) {
+            $this->query .= " WHERE {$where}";
+        }
+
 
         return $this;
     }

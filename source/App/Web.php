@@ -8,6 +8,7 @@ use Source\Core\Connect;
 
 use Source\Models\Contact;
 use Source\Core\Controller;
+use Source\Models\Category;
 use Source\Models\Services;
 use Source\Models\Companies;
 use Source\Models\SocialMedia;
@@ -17,10 +18,10 @@ class Web extends Controller
 
     public function __construct()
     {
-       
-        
+
+
         parent::__construct(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
-       
+
 
         // COLOCANDO PARA TESTE DE CONEXAO DE BCO DE DADOS
         //    Connect::getInstance();
@@ -126,8 +127,7 @@ class Web extends Controller
     public function blog()
     {
 
-        $blogs = (new Blog())->find()->order("title")->limit(6)->fetch(true);
-
+        $blogs = (new Blog())->find("post_at <= date(now()) ")->order("title")->limit(6)->fetch(true);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
@@ -138,6 +138,49 @@ class Web extends Controller
 
         echo $this->view->render("blog", [
             "head" => $head,
+            "blogs" => $blogs
+
+        ]);
+    }
+
+    public function blogList(array $data)
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+        $blog = (new Blog())->findById($data['blog_id']);
+
+
+        // $blogs = (new Blog())->find("post_at <= date(now()) ")->order("title")->limit(6)->fetch(true);
+
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.png")
+        );
+
+        echo $this->view->render("blogList", [
+            "head" => $head,
+            "blog" => $blog
+
+        ]);
+    }
+
+    public function blogCategory(array $data)
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+        $category = (new Category())->find("category = :c", "c={$data['category']}")->fetch();
+        $blogs = (new Blog())->find("category_id = $category->id ")->order("title")->limit(6)->fetch(true);
+
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.png")
+        );
+
+        echo $this->view->render("blogCategory", [
+            "head" => $head,
+            "category" => $category,
             "blogs" => $blogs
 
         ]);

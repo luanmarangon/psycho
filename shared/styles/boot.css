@@ -13,6 +13,20 @@
     text-decoration: none !important;
   }
 
+
+  /*VARIABLES*/
+:root{
+  --color-green: #36BA9B;
+  --color-blue: #39AED9;
+  --color-yellow: #F5B946;
+  --color-red: #D94352;
+  --color-light: #F3F6FA;
+  --color-dark: #1D2025;
+}
+
+
+
+
   .justify{
     text-align: justify;
   }
@@ -61,10 +75,38 @@ input[type="checkbox"]:checked::before {
   margin-left: 5px;
 }
 
-.inactivePeople {
+.icon-inactive {
   color: red !important;
 }
 
-.activePeople{
+.icon-active{
   color: green !important;
+}
+
+
+.status  {
+  position: relative;
+}
+
+.status::after {
+  content: "Um ícone verde representa status ativo, enquanto um ícone vermelho indica status inativo";
+  position: absolute;
+  bottom: 25px; /* Ajuste conforme necessário para a posição do texto */
+  /* bottom: -20px; Ajuste conforme necessário para a posição do texto */
+  left: 5%; /* Ajuste conforme necessário para a posição do texto */
+  /* left: 50%; Ajuste conforme necessário para a posição do texto */
+  transform: translateX(3%);
+  /* transform: translateX(-50%); */
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.status:hover::after {
+  opacity: 1;
 }

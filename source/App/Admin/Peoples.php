@@ -127,7 +127,7 @@ class Peoples extends Admin
             //Validação se houve alteração no Sexo Cadastrado
             if (!empty($data['genre'])) {
                 $peopleUpdate->settingsGenre_id = $data['genre'];
-                echo "Aqui";
+                // echo "Aqui";
             }
 
             $peopleUpdate->dateBirth = $data['dateBirth'];

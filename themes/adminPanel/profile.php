@@ -7,9 +7,9 @@
       <div class="card">
         <div class="card-body">
           <form action="<?= url("/admin/perfil"); ?>" method="post">
-               <!--ACTION SPOOFING-->
-               <input type="hidden" name="action" value="update" />
-               <input type="hidden" name="user_id" value="<?= $user->id; ?>" />
+            <!--ACTION SPOOFING-->
+            <input type="hidden" name="action" value="update" />
+            <input type="hidden" name="user_id" value="<?= $user->id; ?>" />
             <div class="row">
               <h4>Dados de Acesso</h4>
               <small>Alterar os dados de acesso a plataforma</small>
@@ -31,10 +31,24 @@
               </div>
             </div>
           </form>
-
         </div>
       </div>
-
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <h4>Dados Cadastrais</h4>
+            <small>Alterar os dados cadastrais na plataforma.</small>
+            <br>
+            <div class="mb-3 col-6">
+              <label for="inputName" class="form-label">Nome</label>
+              <input type="text" class="form-control" value="<?= $user->firstName; ?> <?= $user->lastName; ?>" name="username">
+            </div>
+            <div class="mb-3 col-1 d-flex align-self-end">
+              <a href="<?= url("/admin/pessoa/$user->peopleId"); ?>" class="btn btn-outline-dark icon-share-square-o"></a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

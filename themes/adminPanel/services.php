@@ -8,7 +8,7 @@
 
       <div class="card">
         <div class="card-body">
-          <a href="#" class="icon-plus btn btn-primary"> Serviço</a>
+          <a href="<?= url("/admin/servico");?>" class="icon-plus btn btn-primary"> Serviço</a>
         </div>
       </div>
 
@@ -23,7 +23,7 @@
                 <h5 class="card-title"> <?= $key->name; ?> </h5>
                 <h6 class="card-subtitle mb-2 text-muted">Criado: <?= date_fmt($key->created_at); ?></h6>
                 <h6 class="card-subtitle mb-2 text-muted">Atualizado: <?= date_fmt($key->updated_at); ?></h6>
-                <a href="<?= url("/admin/pessoas/$key->id"); ?>" class="card-link">Visualizar</a>
+                <a href="<?= url("/admin/servico/$key->id"); ?>" class="card-link">Visualizar</a>
               </div>
             </div>
           </div>

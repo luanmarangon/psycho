@@ -112,6 +112,7 @@ function str_textarea(string $text): string
 function str_limit_words(string $string, int $limit, string $pointer = "..."): string
 {
     $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+    // $string = trim($string);
     $arrWords = explode(" ", $string);
     $numWords = count($arrWords);
 
@@ -131,7 +132,8 @@ function str_limit_words(string $string, int $limit, string $pointer = "..."): s
  */
 function str_limit_chars(string $string, int $limit, string $pointer = "..."): string
 {
-    $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+    $string = trim($string);
+    // $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
     if (mb_strlen($string) <= $limit) {
         return $string;
     }
@@ -282,8 +284,9 @@ function image(?string $image, int $width, int $heigth = null): ?string
  * @param string $date
  * @param string $format
  * @return string
+ * d/m/Y H\hi
  */
-function date_fmt(?string $date, string $format = "d/m/Y H\hi"): string
+function date_fmt(?string $date, string $format = "d/m/Y"): string
 {
     $date = (empty($date) ? "now" : $date);
     return (new DateTime($date))->format($format);

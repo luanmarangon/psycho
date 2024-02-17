@@ -67,7 +67,7 @@
   <?php else : ?>
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title icon-user d-flex justify-content-end <?= ($psychologist->userPsycho($psychologist->users_id)->active  == 'I') ? 'inactivePeople' : 'activePeople'; ?>"></h5>
+        <h5 class="card-title icon-user d-flex justify-content-end status <?= ($psychologist->userPsycho($psychologist->users_id)->active  == 'I') ? 'icon-inactive' : 'icon-active'; ?>"></h5>
         <h5 class="card-title fw-semibold mb-4">Psicologa <?= $people->fullName(); ?> </h5>
         <div class="card">
           <div class="card-body">

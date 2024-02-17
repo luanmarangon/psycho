@@ -3422,7 +3422,8 @@ td:last-child {
 
 .s-pageheader .page-title {
 	margin-top : 0;
-	font-size  : clamp(5.2rem, 10vw, var(--text-huge-1));
+	/* font-size  : clamp(5.2rem, 10vw, var(--text-huge-1)); */
+	font-size: 3em;
 	line-height: 1.0465;
 	color      : var(--color-3);
 }

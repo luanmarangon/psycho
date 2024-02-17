@@ -20,7 +20,8 @@
           <form action="<?= url("/admin/pessoa"); ?>" method="post">
             <!--ACTION SPOOFING-->
             <input type="hidden" name="action" value="create" />
-
+            <div class="ajax_response"><?= flash(); ?></div>
+            <?= csrf_input(); ?>
 
             <div class="card-body">
               <h5>Dados Pessoais</h5>
@@ -123,7 +124,7 @@
 
               <div class="row">
                 <div class="mb-3 col-12">
-                  <button class="btn btn-primary">Cadastrar</button>
+                  <button type="submit" class="btn btn-primary">Cadastrar</button>
                   <a href="#" class="btn btn-danger">Inativar</a>
                 </div>
               </div>
@@ -143,20 +144,8 @@
                 <?php if ($psycho) : ?>
                   <a href="<?= url("/admin/psicologo/{$people->psycho($people->peopleId)->id}"); ?>" class="btn btn-success">Psicologa</a>
                 <?php else : ?>
-                  <!-- <a href="<?= url("/admin/psicologas") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Psicologo (a)</a> -->
                   <a href="<?= url("/admin/pessoa/$people->peopleId/novo-psicologo") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Psicologo (a)</a>
-                  <!-- <a href="<?= url("/admin/psicologas?people_id={$people->peopleId}") ?>"  class="btn btn-primary">Novo Psicologo (a)</a> -->
-
-                  <!-- <a href="#" class="btn btn-green icon-warning" 
-                              data-post="<?= url("/admin/people/people-create/{$person->id}"); ?>" 
-                              data-action="ativar" 
-                              data-confirm="ATENÇÃO: Tem certeza que deseja ativar o cliente!" 
-                              data-user_id="<?= $person->id; ?>"><span class="icon-check"></span></a> -->
-                            
-                
-                
-                
-                  <?php endif; ?>
+                <?php endif; ?>
               </div>
               <div class="mb-3 col-6 d-flex justify-content-end">
                 <form action="<?= url("/admin/pessoa/$people->peopleId"); ?>" method="post">

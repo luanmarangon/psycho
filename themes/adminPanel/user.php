@@ -16,14 +16,14 @@
         <?php if ($users) : ?>
           <?php foreach ($users as $key) : ?>
             <div class="col-md-4">
-              <h5 class="card-title icon-user d-flex justify-content-end <?= ($key->active == 'I') ? 'inactivePeople' : 'activePeople'; ?>"></h5>
+              <h5 class="card-title icon-user d-flex justify-content-end status <?= ($key->active == 'I') ? 'icon-inactive' : 'icon-active'; ?>"></h5>
 
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title"> <?= $key->firstName; ?> <?= $key->lastName; ?></h5>
                   <h6 class="card-subtitle mb-2 text-muted">Login: <?= $key->username; ?></h6>
                   <h6 class="card-subtitle mb-2 text-muted">Nivel: <?= $key->level($key->level); ?></h6>
-                  <a href="<?= url("/admin/usuarios/$key->users_id"); ?>" class="card-link">Visualizar</a>
+                  <a href="<?= url("/admin/usuarios/$key->usersId"); ?>" class="card-link">Visualizar</a>
                 </div>
               </div>
             </div>

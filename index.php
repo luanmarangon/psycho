@@ -23,6 +23,8 @@ $route->get("/", "Web:home");
 $route->get("/sobre", "Web:about");
 $route->get("/servicos", "Web:services");
 $route->get("/blog", "Web:blog");
+$route->get("/blog/{blog_id}", "Web:blogList");
+$route->get("/blog/categoria/{category}", "Web:blogCategory");
 $route->get("/contato", "Web:contact");
 $route->get("/faq", "Web:faq");
 $route->get("/politica-privacidade", "Web:privacyPolicy");
@@ -39,6 +41,7 @@ $route->get("/", "Login:root");
 $route->get("/login", "Login:login");
 $route->post("/login", "Login:login");
 $route->get("/cadastro", "Login:loginCreate");
+$route->get("/logoff", "Login:logoff");
 
 
 //Dash
@@ -102,13 +105,26 @@ $route->post("/perfil", "Users:profile");
 
 //Services
 $route->get("/servicos", "Service:home");
+$route->get("/servico", "Service:service");
+$route->post("/servico", "Service:service");
+$route->get("/servico/{service_id}", "Service:service");
+$route->post("/servico/{service_id}", "Service:service");
 
 
 //Blogs
-$route->get("/blog", "Blogs:home");
+$route->get("/blogs", "Blogs:home");
+$route->get("/blog", "Blogs:blog");
+$route->post("/blog", "Blogs:blog");
+$route->get("/blog/{blog_id}", "Blogs:blog");
+$route->post("/blog/{blog_id}", "Blogs:blog");
 
 //Faq's
-$route->get("/faq", "Faqs:home");
+$route->get("/faqs", "Faqs:home");
+$route->get("/faq", "Faqs:faq");
+$route->post("/faq", "Faqs:faq");
+$route->get("/faq/{faq_id}", "Faqs:faq");
+$route->post("/faq/{faq_id}", "Faqs:faq");
+
 
 
 

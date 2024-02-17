@@ -6,7 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?= $head; ?>
   <link rel="stylesheet" href="<?= theme("/assets/style.css", CONF_VIEW_ADMIN); ?>" />
-  <link rel="icon" type="image/png" href="<?= theme("/assets/images/favicon.png", CONF_VIEW_ADMIN); ?>" />
+  <link rel="icon" type="image/png" href="<?= theme("/assets/images/logos/favicon.ico", CONF_VIEW_ADMIN); ?>" />
+
+  <!-- Tiny -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.tiny.cloud/1/szr0vy5xtdiw1w2g2p3gyuvtb44yy625kqlquvjfwo2qid8b/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -17,6 +23,9 @@
       <p class="ajax_load_box_title">Aguarde, carregando...</p>
     </div>
   </div>
+
+  <div class="ajax_response"><?= flash(); ?></div>
+
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
     <!-- Sidebar Start -->
@@ -53,7 +62,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="<?= url("/admin/empresas"); ?>" aria-expanded="false">
                 <span>
-                  <i class="ti ti-article"></i>
+                  <i class="icon-building-o"></i>
                 </span>
                 <span class="hide-menu">Empresa</span>
               </a>
@@ -61,41 +70,42 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="<?= url("/admin/pessoas"); ?>" aria-expanded="false">
                 <span>
-                  <i class="ti ti-alert-circle"></i>
+                  <i class="icon-users"></i>
                 </span>
                 <span class="hide-menu">Pessoas</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/usuarios"); ?>" aria-expanded="false">
-                <span>
-                  <i class="ti ti-cards"></i>
-                </span>
-                <span class="hide-menu">Usuários</span>
-              </a>
-            </li>
+
             <li class="sidebar-item">
               <a class="sidebar-link" href="<?= url("/admin/servicos"); ?>" aria-expanded="false">
                 <span>
-                  <i class="ti ti-file-description"></i>
+                  <i class="icon-briefcase"></i>
                 </span>
                 <span class="hide-menu">Serviços</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/blog"); ?>" aria-expanded="false">
+              <a class="sidebar-link" href="<?= url("/admin/blogs"); ?>" aria-expanded="false">
                 <span>
-                  <i class="ti ti-typography"></i>
+                  <i class="icon-laptop"></i>
                 </span>
                 <span class="hide-menu">Blog</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/faq"); ?>" aria-expanded="false">
+              <a class="sidebar-link" href="<?= url("/admin/faqs"); ?>" aria-expanded="false">
                 <span>
-                  <i class="ti ti-typography"></i>
+                  <i class="icon-file-text"></i>
                 </span>
                 <span class="hide-menu">Faq</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="<?= url("/admin/usuarios"); ?>" aria-expanded="false">
+                <span>
+                  <i class="icon-user-secret"></i>
+                </span>
+                <span class="hide-menu">Usuários</span>
               </a>
             </li>
             <!-- <li class="nav-small-cap">
@@ -176,15 +186,15 @@
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">Perfil</p>
                     </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <!-- <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-mail fs-6"></i>
                       <p class="mb-0 fs-3">Conta</p>
                     </a>
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">Agenda</p>
-                    </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    </a> -->
+                    <a href="<?= url("/admin/logoff"); ?>" class="icon-sign-out btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                 </div>
               </li>

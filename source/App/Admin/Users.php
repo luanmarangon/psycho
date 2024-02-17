@@ -147,7 +147,7 @@ class Users extends Admin
             $email = (new Email())->bootstrap("Nova senha Redefinida", $body, $recipient, $recipientName)->send();
             $user->save();
 
-            $this->message->success("Usuário Atualizado com sucesso...")->flash();
+            $this->message->success("Nova senha enviada para o E-Mail cadastrado!")->flash();
             redirect(url("/admin/usuarios/$user->id"));
         }
 
@@ -174,53 +174,51 @@ class Users extends Admin
 
     public function profile(array $data)
     {
-        $user = Auth::user();
+        $userId = Auth::user()->id;
+        $user = (new User())->findUser("u.id=$userId")->fetch();
+        
 
         //update
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
             $userUpdate = (new User())->findById($user->id);
+            $userOld = (new User())->findById($user->id);
             $userUpdate->username = $data['username'];
 
             if (!empty($data['password']) || !empty($data['confpassword'])) {
                 if ($data['password'] === $data['confpassword']) {
                     $userUpdate->password = $data['password'];
-                    echo "Senhas iguais.";
                 } else {
-                    echo "As senhas digitadas são diferentes.";
+                    $this->message->warning("Senhas não conferem...")->flash();
+                    redirect(url("/admin/perfil"));
                 }
+                // return;
             }
             if ($userUpdate->id != Auth::user()->id) {
-                //Retorno
-                return;
+                $this->message->info("Você não possui permissão para alterar esse acesso...")->flash();
+                redirect(url("/admin/perfil"));
             }
 
-            
             if (!$userUpdate->save()) {
-                $json["message"] = $userUpdate->message()->render();
+                $json["message"] = $user->message()->render();
                 echo json_encode($json);
                 return;
             }
 
-           
+            if ($data['username'] != $userOld->username) {
+                $this->message->success("login alterado com sucesso. Por favor, realize um novo login...")->flash();
 
-
-
-
-
-            var_dump($data);
-            var_dump(Auth::user()->username);
-
-            var_dump($userUpdate);
-
-
-
-
-            // exit();
-
-            $this->message->success("Usuário Atualizado com sucesso...")->flash();
-            redirect(url("/admin/perfil"));
+                // Adicionando um atraso de 5 segundos antes de efetuar o logout usando JavaScript
+                echo "<script>
+                        setTimeout(function() {
+                            window.location.href = '" . url("/admin/logoff") . "';
+                        }, 5000); // 5000 milissegundos = 5 segundos
+                      </script>";
+            } else {
+                $this->message->success("Usuário Atualizado com sucesso...")->flash();
+                redirect(url("/admin/perfil"));
+            }
         }
 
 

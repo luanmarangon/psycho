@@ -26,16 +26,20 @@
                     <?php foreach ($blogs as $blog) : ?>
 
                         <div class="grid-list-items__item blog-card">
-                            <div class="blog-card__header">
-                                <div class="blog-card__cat-links">
-                                    <a href="#"><?= $blog->blogCategory($blog->category_id)->category; ?></a>
-                                </div>
-                                <h3 class="blog-card__title"><a href="#"><?= $blog->title; ?></a></h3>
-                            </div>
-                            <div class="blog-card__text">
-                                <p><?= $blog->body; ?></p>
-                            </div>
-                        </div> <!-- end blog-card -->
+    <div class="blog-card__header">
+        <div class="blog-card__cat-links">
+            <a href="<?= url("/blog/categoria/{$blog->category($blog->category_id)->category}");?>"><?= $blog->category($blog->category_id)->category; ?></a>
+        </div>
+        <h3 class="blog-card__title"><a href="<?= url("/blog/$blog->id");?>"><?= str_limit_chars($blog->title, 40); ?></a></h3>
+    </div>
+    <div class="blog-card__text">
+        <p><?= str_limit_chars($blog->body, 150); ?></p>
+    </div>
+    <div class="text-right"> <!-- Adicionando classe 'text-right' para alinhar à direita -->
+        <a href="<?= url("/blog/$blog->id");?>">Ver Mais</a>
+    </div>
+</div> <!-- end blog-card -->
+
 
                     <?php endforeach; ?>
                 </div> <!-- grid-list-items -->
