@@ -90,6 +90,7 @@ define("CONF_SOCIAL_YOUTUBE", "#");
  * API
  */
 define("CONF_API_GOOGLE_MAPS", "AIzaSyChwUAYltIcuV82BhrVuiGkzrByR8ve19Y");
+define("CONF_API_TINY", "szr0vy5xtdiw1w2g2p3gyuvtb44yy625kqlquvjfwo2qid8b");
 // define("CONF_API_GOOGLE_MAPS_LINK", "https://maps.googleapis.com/maps/api/geocode/json?address=");
 
 /**

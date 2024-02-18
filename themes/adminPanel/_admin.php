@@ -10,8 +10,10 @@
 
   <!-- Tiny -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.tiny.cloud/1/szr0vy5xtdiw1w2g2p3gyuvtb44yy625kqlquvjfwo2qid8b/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://cdn.tiny.cloud/1/<?= CONF_API_TINY; ?>/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+
+  
 
 </head>
 
@@ -110,25 +112,26 @@
             </li>
             <!-- <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Usuários</span>
-            </li>
+              <span class="hide-menu">Configurações</span>
+            </li> -->
+
             <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/usuarios"); ?>" aria-expanded="false">
+              <a class="sidebar-link" href="<?= url("/admin/configuracoes"); ?>" aria-expanded="false">
                 <span>
-                  <i class="ti ti-login"></i>
+                  <i class="icon-cogs"></i>
                 </span>
-                <span class="hide-menu">Usuários</span>
+                <span class="hide-menu">Configurações</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="<?= url("/admin/novo-usuario"); ?>" aria-expanded="false">
+            <!--<li class="sidebar-item">
+              <a class="sidebar-link" href="<?= url("/admin/conf-email"); ?>" aria-expanded="false">
                 <span>
                   <i class="ti ti-user-plus"></i>
                 </span>
-                <span class="hide-menu">Cadastro</span>
+                <span class="hide-menu">Sobre</span>
               </a>
             </li>
-            <li class="nav-small-cap">
+             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">EXTRA</span>
             </li>
@@ -211,6 +214,7 @@
   </div>
   <script src="<?= theme("/assets/scripts.js", CONF_VIEW_ADMIN); ?>"></script>
   <?= $v->section("scripts"); ?>
+
 </body>
 
 </html>

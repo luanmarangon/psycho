@@ -8,6 +8,7 @@ use Source\Core\Connect;
 
 use Source\Models\Contact;
 use Source\Core\Controller;
+use Source\Models\AboutCompany;
 use Source\Models\Category;
 use Source\Models\Services;
 use Source\Models\Companies;
@@ -92,6 +93,7 @@ class Web extends Controller
     public function about()
     {
 
+        $about = (new AboutCompany())->find()->fetch();
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
@@ -102,6 +104,7 @@ class Web extends Controller
 
         echo $this->view->render("about", [
             "head" => $head,
+            "about" => $about
 
         ]);
     }

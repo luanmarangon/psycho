@@ -51,7 +51,7 @@
                 <div class="mb-3 col-3">
                   <label for="exampleInputPassword1" class="form-label">Sexo:</label>
                   <!-- <input type="text" class="form-control"  > -->
-                  <select class="form-control" id="" name="genre">
+                  <select class="form-select" id="" name="genre">
                     <option value="">Escolha....</option>
                     <?php foreach ($genre as $key) : ?>
                       <option value="<?= $key->id; ?>"><?= $key->genre; ?></option>
@@ -194,7 +194,7 @@
                 <div class="mb-3 col-3">
                   <label for="exampleInputPassword1" class="form-label">Sexo:</label>
                   <!-- <input type="text" class="form-control"  > -->
-                  <select class="form-control" id="" name="genre">
+                  <select class="form-select" id="" name="genre">
                     <option value=""><?= $people->genre($people->settingsGenre_id)->genre; ?></option>
                     <?php foreach ($genre as $key) : ?>
                       <?php if ($key->id != $people->settingsGenre_id) : ?>

@@ -101,7 +101,18 @@ $route->get("/perfil", "Users:profile");
 $route->post("/perfil", "Users:profile");
 
 
+//Configurações
+$route->get("/configuracoes", "Settings:home");
 
+$route->get("/configuracoes/email", "Settings:mail");
+$route->post("/configuracoes/email", "Settings:mail");
+$route->get("/configuracoes/email/{mail_id}", "Settings:mail");
+$route->post("/configuracoes/email/{mail_id}", "Settings:mail");
+
+$route->get("/configuracoes/sobre", "Settings:about");
+$route->post("/configuracoes/sobre", "Settings:about");
+$route->get("/configuracoes/sobre/{about_id}", "Settings:about");
+$route->post("/configuracoes/sobre/{about_id}", "Settings:about");
 
 //Services
 $route->get("/servicos", "Service:home");

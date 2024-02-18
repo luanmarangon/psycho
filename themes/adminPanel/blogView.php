@@ -34,7 +34,7 @@
                   <label for="inputNome" class="form-label">Categoria</label>
                   <input type="text" class="form-control d-none" name="categorieNew">
 
-                  <select name="categorie" class="form-control ">
+                  <select name="categorie" class="form-select ">
                     <option value="">Escolha uma categoria....</option>
                     <?php foreach ($categories as $key) : ?>
                       <option value="<?= $key->id; ?>"><?= $key->category; ?></option>
@@ -112,7 +112,7 @@
                   <label for="inputNome" class="form-label">Categoria</label>
                   <input type="text" class="form-control d-none" name="categorieNew">
 
-                  <select name="categorie" class="form-control ">
+                  <select name="categorie" class="form-select">
                     <option value="<?= $blog->category_id ?>"><?= $blog->category($blog->category_id)->category; ?></option>
 
                     <?php foreach ($categories as $key) : ?>
