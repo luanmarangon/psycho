@@ -46,43 +46,14 @@
                 <h2 class="u-add-bottom">Meus valores e crenças</h2>
 
                 <div class="grid-list-items list-items">
+                    <?php foreach($values as $key):?>
                     <div class="grid-list-items__item list-items__item u-remove-bottom">
                         <div class="list-items__item-header">
-                            <h6 class="list-items__item-small-title">Autenticidade</h6>
+                            <h6 class="list-items__item-small-title"><?= $key->value; ?></h6>
                         </div>
-                        <p>
-                            Pratico a autenticidade, sendo genuína e transparente em minha abordagem
-                            terapêutica. Isso cria uma atmosfera onde os clientes se sentem à vontade para serem
-                            autênticos também.
-                        </p>
+                        <p><?= $key->description; ?></p>
                     </div>
-                    <div class="grid-list-items__item list-items__item u-remove-bottom">
-                        <div class="list-items__item-header">
-                            <h6 class="list-items__item-small-title">Empatia</h6>
-                        </div>
-                        <p>
-                            Valorizo a capacidade de me colocar no lugar do cliente, compreendendo suas emoções
-                            e perspectivas. A empatia é a base para construir uma relação terapêutica sólida.
-                        </p>
-                    </div>
-                    <div class="grid-list-items__item list-items__item u-remove-bottom">
-                        <div class="list-items__item-header">
-                            <h6 class="list-items__item-small-title">Confidencialidade</h6>
-                        </div>
-                        <p>
-                            Comprometo-me a manter a confidencialidade das informações compartilhadas durante as
-                            sessões, criando um ambiente seguro e de confiança para meus clientes.
-                        </p>
-                    </div>
-                    <div class="grid-list-items__item list-items__item u-remove-bottom">
-                        <div class="list-items__item-header">
-                            <h6 class="list-items__item-small-title">Respeito pela Diversidade</h6>
-                        </div>
-                        <p>
-                            Reconheço e respeito a diversidade de experiências, identidades e culturas. Minha
-                            prática é inclusiva, acolhendo a singularidade de cada indivíduo.
-                        </p>
-                    </div>
+                        <?php endforeach;?>
                 </div> <!--grid-list-items -->
 
                 <h2>Por que trabalhar comigo</h2>

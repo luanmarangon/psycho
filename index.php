@@ -114,6 +114,11 @@ $route->post("/configuracoes/sobre", "Settings:about");
 $route->get("/configuracoes/sobre/{about_id}", "Settings:about");
 $route->post("/configuracoes/sobre/{about_id}", "Settings:about");
 
+$route->get("/configuracoes/valores", "Settings:values");
+$route->post("/configuracoes/valores", "Settings:values");
+$route->get("/configuracoes/valores/{values_id}", "Settings:values");
+$route->post("/configuracoes/valores/{values_id}", "Settings:values");
+
 //Services
 $route->get("/servicos", "Service:home");
 $route->get("/servico", "Service:service");

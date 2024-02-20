@@ -6,6 +6,7 @@ use Source\App\Admin\Admin;
 use Source\Models\companies;
 use Source\Models\AboutCompany;
 use Source\Models\MailSettings;
+use Source\Models\ValueBeliefs;
 
 class Settings extends Admin
 {
@@ -17,8 +18,10 @@ class Settings extends Admin
     public function home()
     {
 
-        $mail = (new MailSettings())->find()->fetch(true);
         $about = (new AboutCompany())->find()->fetch();
+        $mail = (new MailSettings())->find()->fetch(true);
+        $values = (new ValueBeliefs())->find()->fetch(true);
+
         // var_dump($mail);
         // exit();
 
@@ -33,7 +36,8 @@ class Settings extends Admin
         echo $this->view->render("settings", [
             "head" => $head,
             "mail" => $mail,
-            "about" => $about
+            "about" => $about,
+            "values" => $values
         ]);
     }
 
@@ -146,9 +150,6 @@ class Settings extends Admin
 
             $about = (new AboutCompany())->findById($data['about_id']);
 
-            var_dump($data, $about);
-            exit();
-
             $about->inspiration = $data['inspiration'];
             $about->currentSituation = $data['currentSituation'];
             $about->experience = $data['experience'];
@@ -182,6 +183,72 @@ class Settings extends Admin
         echo $this->view->render("aboutView", [
             "head" => $head,
             "about" => $about,
+
+        ]);
+    }
+
+    public function values(array $data)
+    {
+        if (!empty($data["action"]) && $data["action"] == "create") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $valueQuery = (new ValueBeliefs())->find("value = :v", "v={$data['value']}")->fetch(true);
+
+            if ($valueQuery) {
+                $this->message->warning("Valor e Crença já cadastrado...")->flash();
+                redirect(url("/admin/configuracoes"));
+            }
+            $value = new ValueBeliefs();
+
+            $value->value = strtoupper($data['value']);
+            $value->description = $data['description'];
+
+            if (!$value->save()) {
+                $json["message"] = $value->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Valores e Crenças cadastradas com sucesso...")->flash();
+            redirect(url("/admin/configuracoes/valores/$value->id"));
+        }
+
+        if (!empty($data["action"]) && $data["action"] == "update") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $value = (new ValueBeliefs())->findById($data['values_id']);
+
+            $value->value =  strtoupper($data['value']);
+            $value->description = $data['description'];
+
+            if (!$value->save()) {
+                $json["message"] = $value->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Valores e Crenças atualizado com sucesso...")->flash();
+            redirect(url("/admin/configuracoes/valores/$value->id"));
+        }
+
+        //read
+        $values = null;
+
+        if (!empty($data['values_id'])) {
+            $valuesId = filter_var($data["values_id"], FILTER_SANITIZE_STRIPPED);
+            $values = (new ValueBeliefs())->findById($valuesId);
+        }
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " | Admin",
+            CONF_SITE_DESC,
+            url("/admin"),
+            theme("/assets/images.image.jpg", CONF_VIEW_ADMIN),
+            false
+        );
+
+        echo $this->view->render("valuesView", [
+            "head" => $head,
+            "values" => $values,
 
         ]);
     }

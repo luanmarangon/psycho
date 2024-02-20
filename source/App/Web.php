@@ -13,6 +13,7 @@ use Source\Models\Category;
 use Source\Models\Services;
 use Source\Models\Companies;
 use Source\Models\SocialMedia;
+use Source\Models\ValueBeliefs;
 
 class Web extends Controller
 {
@@ -94,6 +95,7 @@ class Web extends Controller
     {
 
         $about = (new AboutCompany())->find()->fetch();
+        $values = (new ValueBeliefs())->find()->fetch(true);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
@@ -104,7 +106,8 @@ class Web extends Controller
 
         echo $this->view->render("about", [
             "head" => $head,
-            "about" => $about
+            "about" => $about,
+            "values"=> $values
 
         ]);
     }

@@ -119,19 +119,34 @@
     <div class="card-body">
       <div class="row">
         <div class="col-6">
-          <h5 class="card-title fw-semibold mb-4">Cadastro de sobre</h5>
+          <h5 class="card-title fw-semibold mb-4">Valores</h5>
         </div>
         <div class="col-6 d-flex justify-content-end">
           <a href="<?= url("/admin/configuracoes/valores"); ?>" class="btn btn-primary icon-plus"> Novo Valor</a>
         </div>
       </div>
       <div class="card">
-        <?php if ($mail) : ?>
+        <?php if ($values) : ?>
           <div class="card-body">
 
             <div class="row">
               <div class="col-12">
-
+              <table>
+                  <tr>
+                    <th>Valor</th>
+                    <th>Descrição</th>
+                    <th></th>
+                  </tr>
+                  <?php foreach ($values as $key) : ?>
+                    <tr>
+                      <td><?= $key->value; ?></td>
+                      <td><?= str_limit_chars($key->description, 150); ?></td>
+                      <td>
+                        <a href="<?= url("/admin/configuracoes/email/$key->id"); ?>" class="btn btn-outline-success">Editar</a>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </table>
               </div>
             </div>
           </div>
