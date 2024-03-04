@@ -78,8 +78,13 @@
               <div class="mb-3 col-6 d-flex justify-content-end">
                 <form action="<?= url("/admin/psicologo/{$people->psycho($people->id)->id}"); ?>" method="post">
                   <!--ACTION SPOOFING-->
-                  <input type="hidden" name="action" value="delete" />
-                  <button class="btn btn-danger">Inativar</button>
+                  <?php if ($user->active === 'I') : ?>
+                    <input type="hidden" name="action" value="active" />
+                    <button class="btn btn-success">Ativar</button>
+                  <?php else : ?>
+                    <input type="hidden" name="action" value="delete" />
+                    <button class="btn btn-danger">Inativar</button>
+                  <?php endif; ?>
                 </form>
               </div>
 

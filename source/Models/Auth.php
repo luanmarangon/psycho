@@ -2,6 +2,9 @@
 
 namespace Source\Models;
 
+use PDO;
+use PDOException;
+use Source\App\Admin\Users;
 use Source\Core\View;
 use Source\Core\Model;
 use Source\Models\User;
@@ -128,33 +131,33 @@ class Auth extends Model
      * @param string $email
      * @return boolean
      */
-    public function forget(string $email): bool
-    {
-        $user = (new User())->findByEmail($email);
+    // public function forget(string $email): bool
+    // {
+    //     $user = (new User())->findByEmail($email);
 
-        if (!$user) {
-            $this->message->warning("O e-mail informado não está cadastrado");
-            return false;
-        }
+    //     if (!$user) {
+    //         $this->message->warning("O e-mail informado não está cadastrado");
+    //         return false;
+    //     }
 
-        $user->forget = md5(uniqid(rand(), true));
-        $user->save();
+    //     $user->forget = md5(uniqid(rand(), true));
+    //     $user->save();
 
-        $view = new View(__DIR__ . "/../../shared/views/email");
-        $message = $view->render("forget", [
-            "first_name" => $user->first_name,
-            "forget_link" => url("/recuperar/{$user->email}|{$user->forget}")
-        ]);
+    //     $view = new View(__DIR__ . "/../../shared/views/email");
+    //     $message = $view->render("forget", [
+    //         "first_name" => $user->first_name,
+    //         "forget_link" => url("/recuperar/{$user->email}|{$user->forget}")
+    //     ]);
 
-        (new Email())->bootstrap(
-            "Recupere sua senha no " . CONF_SITE_NAME,
-            $message,
-            $user->email,
-            "{$user->first_name} {$user->last_name}"
-        )->send();
+    //     (new Email())->bootstrap(
+    //         "Recupere sua senha no " . CONF_SITE_NAME,
+    //         $message,
+    //         $user->email,
+    //         "{$user->first_name} {$user->last_name}"
+    //     )->send();
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * @param string $email
@@ -163,35 +166,58 @@ class Auth extends Model
      * @param string $passwordRe
      * @return boolean
      */
-    public function reset(string $email, string $code, string $password, string $passwordRe): bool
+    // public function reset(string $email, string $code, string $password, string $passwordRe): bool
+    // {
+    //     $user = (new User())->findByEmail($email);
+
+    //     if (!$user) {
+    //         $this->message->warning("A conta para recuperação não foi encontrada");
+    //         return false;
+    //     }
+
+    //     if ($user->forget != $code) {
+    //         $this->message->error("Desculpe, mas o código de verificação não é válido");
+    //         return false;
+    //     }
+
+    //     if (!is_passwd($password)) {
+    //         $min = CONF_PASSWD_MIN_LEN;
+    //         $max = CONF_PASSWD_MAX_LEN;
+    //         $this->message->info("Sua senha deve ter entre {$min} e {$max} caracteres!");
+    //         return false;
+    //     }
+
+    //     if ($password != $passwordRe) {
+    //         $this->message->warning("Você informou duas senhas diferentes");
+    //         return false;
+    //     }
+
+    //     $user->password = $password;
+    //     $user->forget = null;
+    //     $user->save();
+    //     return true;
+    // }
+
+    public function loginExt(string $login, string $passwd)
     {
-        $user = (new User())->findByEmail($email);
+        try {
+            $conexao = codes();
+            $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if (!$user) {
-            $this->message->warning("A conta para recuperação não foi encontrada");
+            $query = 'SELECT * FROM users WHERE username = :username && password = :passwd';
+
+            $stmt = $conexao->prepare($query);
+            $stmt->bindParam(':username', $login);
+            $stmt->bindParam(':passwd', $passwd);
+            $stmt->execute();
+            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($resultados) > 0) {
+            return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
             return false;
         }
-
-        if ($user->forget != $code) {
-            $this->message->error("Desculpe, mas o código de verificação não é válido");
-            return false;
-        }
-
-        if (!is_passwd($password)) {
-            $min = CONF_PASSWD_MIN_LEN;
-            $max = CONF_PASSWD_MAX_LEN;
-            $this->message->info("Sua senha deve ter entre {$min} e {$max} caracteres!");
-            return false;
-        }
-
-        if ($password != $passwordRe) {
-            $this->message->warning("Você informou duas senhas diferentes");
-            return false;
-        }
-
-        $user->password = $password;
-        $user->forget = null;
-        $user->save();
-        return true;
     }
 }

@@ -5,6 +5,7 @@ namespace Source\App\Admin;
 use Source\App\Admin\Admin;
 use Source\Models\companies;
 use Source\Models\AboutCompany;
+use Source\Models\licenses;
 use Source\Models\MailSettings;
 use Source\Models\ValueBeliefs;
 
@@ -249,6 +250,25 @@ class Settings extends Admin
         echo $this->view->render("valuesView", [
             "head" => $head,
             "values" => $values,
+
+        ]);
+    }
+
+    public function code()
+    {
+        $codes = (new licenses())->find("expiration > date(now())")->order('expiration DESC')->fetch(true);
+        
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " | Admin",
+            CONF_SITE_DESC,
+            url("/admin"),
+            theme("/assets/images.image.jpg", CONF_VIEW_ADMIN),
+            false
+        );
+
+        echo $this->view->render("codes", [
+            "head" => $head,
+            "codes" => $codes,
 
         ]);
     }

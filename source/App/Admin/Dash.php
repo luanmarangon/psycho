@@ -15,6 +15,7 @@ class Dash extends Admin
 
     public function home()
     {
+        // var_dump(Auth::user());
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",

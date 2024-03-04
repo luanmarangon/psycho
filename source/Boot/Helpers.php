@@ -502,3 +502,45 @@ function maps_api(string $address)
         return false;
     }
 }
+
+
+function codes()
+{
+    // Configurações de conexão
+    $host = 'localhost';
+    $usuario = 'root';
+    $senha = '';
+    $dataBase = 'beorn';
+
+    $dsn = "mysql:host=$host;dbname=$dataBase;charset=utf8mb4";
+    $conexao = new PDO($dsn, $usuario, $senha);
+    return $conexao;
+
+
+    // try {
+    //     $conexao = new PDO($dsn, $usuario, $senha);
+    //     $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    //     $code = (new $data())->find()->order('expiration DESC')->fetch();
+    //     $expiration = $code->expiration;
+
+    //     $query = 'SELECT * FROM fin_licenses WHERE expiration > :expiration';
+
+    //     $stmt = $conexao->prepare($query);
+    //     $stmt->bindParam(':expiration', $expiration);
+    //     $stmt->execute();
+    //     $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //     $newCode = new $data();
+
+    //     foreach ($resultados as $resultado) {
+    //         $newCode->code = $resultado['license'];
+    //         $newCode->expiration = $resultado['expiration'];
+
+    //         $newCode->save();
+    //     }
+    // } catch (PDOException $e) {
+    //     die('Erro ao conectar ao banco de dados: ' . $e->getMessage());
+    // }
+    // $conexao = null;
+}

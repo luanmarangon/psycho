@@ -5,14 +5,7 @@
     <div class="card-body">
       <h5 class="card-title fw-semibold mb-4">Usuários do Sistema</h5>
 
-      <div class="card">
-        <div class="card-body">
-          <a href="#" class="btn btn-primary">Novo</a>
-        </div>
-      </div>
-
       <div class="row">
-
         <?php if ($users) : ?>
           <?php foreach ($users as $key) : ?>
             <div class="col-md-4">
@@ -34,7 +27,6 @@
               <h5>Não há usuários cadastrados no momento. Favor verificar com o administrador.</h5>
             </div>
           </div>
-
         <?php endif; ?>
       </div>
     </div>

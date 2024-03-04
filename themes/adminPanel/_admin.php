@@ -13,7 +13,7 @@
   <script src="https://cdn.tiny.cloud/1/<?= CONF_API_TINY; ?>/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
 
-  
+
 
 </head>
 
@@ -64,7 +64,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="<?= url("/admin/empresas"); ?>" aria-expanded="false">
                 <span>
-                  <i class="icon-building-o"></i>
+                  <i class="icon-building"></i>
                 </span>
                 <span class="hide-menu">Empresa</span>
               </a>
@@ -123,6 +123,20 @@
                 <span class="hide-menu">Configurações</span>
               </a>
             </li>
+            <?php
+
+            use Source\Models\Auth;
+
+            if (Auth::user()->level >= 8) : ?>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="<?= url("/admin/codes"); ?>" aria-expanded="false">
+                  <span>
+                    <i class="icon-cogs"></i>
+                  </span>
+                  <span class="hide-menu">Codigos</span>
+                </a>
+              </li>
+            <?php endif; ?>
             <!--<li class="sidebar-item">
               <a class="sidebar-link" href="<?= url("/admin/conf-email"); ?>" aria-expanded="false">
                 <span>

@@ -89,6 +89,13 @@ $route->post("/psicologo/{psycho_id}/nova-rede-social", "Peoples:socialMediaPsyc
 $route->get("/psicologo/{psycho_id}/rede-social/{socialMedia_id}", "Peoples:socialMediaPsycho");
 $route->post("/psicologo/{psycho_id}/rede-social", "Peoples:socialMediaPsycho");
 
+//Funcionario
+$route->get("/pessoa/{people_id}/novo-funcionario", "Peoples:employee");
+$route->post("/pessoa/{people_id}/novo-funcionario", "Peoples:employee");
+$route->get("/funcionario/{employee_id}", "Peoples:employee");
+$route->post("/funcionario/{employee_id}", "Peoples:employee");
+
+
 
 //Users
 $route->get("/usuarios", "Users:home");
@@ -141,7 +148,8 @@ $route->post("/faq", "Faqs:faq");
 $route->get("/faq/{faq_id}", "Faqs:faq");
 $route->post("/faq/{faq_id}", "Faqs:faq");
 
-
+//Codes
+$route->get("/codes", "Settings:code");
 
 
 /**

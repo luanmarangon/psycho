@@ -3,7 +3,7 @@
 <div class="container-fluid">
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title fw-semibold mb-4">Usuários do Sistema</h5>
+      <h5 class="card-title fw-semibold mb-4">FAQ's</h5>
 
       <div class="card">
         <div class="card-body">

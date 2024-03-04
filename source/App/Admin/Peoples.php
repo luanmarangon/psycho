@@ -7,6 +7,7 @@ use Source\Models\User;
 use Source\Models\People;
 use Source\Models\Address;
 use Source\App\Admin\Admin;
+use Source\Models\Employee;
 use Source\Models\SocialMedia;
 use Source\Models\Psychologist;
 use Source\Models\SettingsGenre;
@@ -199,12 +200,14 @@ class Peoples extends Admin
         $peopleEdit = null;
         $contactPeople = null;
         $psycho = null;
+        $employee = null;
         if (!empty($data["people_id"])) {
             $peopleId = filter_var($data["people_id"], FILTER_SANITIZE_STRIPPED);
 
             $peopleEdit = (new People())->peopleAddres($peopleId)->fetch();
             $contactPeople = (new People())->contactPeople($peopleId)->fetch(true);
             $psycho = (new Psychologist())->find("people_id = {$peopleId}")->fetch();
+            $employee = (new Employee())->find("people_id = {$peopleId}")->fetch();
         }
 
 
@@ -221,7 +224,8 @@ class Peoples extends Admin
             "genre" => $genre,
             "people" => $peopleEdit,
             "contactPeople" => $contactPeople,
-            "psycho" => $psycho
+            "psycho" => $psycho,
+            "employee" => $employee
         ]);
     }
 
@@ -367,7 +371,7 @@ class Peoples extends Admin
             redirect(url("/admin/psicologo/$psychologistUpdate->id"));
         }
 
-        //update
+        //Delete
         if (!empty($data["action"]) && $data["action"] == "delete") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
@@ -375,6 +379,25 @@ class Peoples extends Admin
             $userDelete = (new User())->find("id = {$psycho->users_id}")->fetch();
 
             $userDelete->active = 'I';
+
+            if (!$userDelete->save()) {
+                $json["message"] = $userDelete->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Psicologo (a) inativado com sucesso...")->flash();
+            redirect(url("/admin/psicologo/$psycho->id"));
+        }
+
+        //Ativar
+        if (!empty($data["action"]) && $data["action"] == "active") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $psycho = (new Psychologist())->findById($data['psycho_id']);
+            $userDelete = (new User())->find("id = {$psycho->users_id}")->fetch();
+
+            $userDelete->active = 'A';
 
             if (!$userDelete->save()) {
                 $json["message"] = $userDelete->message()->render();
@@ -416,11 +439,6 @@ class Peoples extends Admin
         ]);
     }
 
-
-
-
-
-
     public function socialMedia(array $data)
     {
 
@@ -443,18 +461,6 @@ class Peoples extends Admin
         $socialMediaPsychologist = (new Psychologist())->psychologistSocialMeida($psychologistId)->fetch(true);
         $psycho = (new Psychologist())->findById($psychologistId);
         $people = (new People())->findById($psycho->people_id);
-
-
-
-
-        // var_dump(
-        //     $psychologistId,
-        //     $socialMediaPsychologist
-        // );
-
-        // exit();
-
-
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -609,6 +615,141 @@ class Peoples extends Admin
             "head" => $head,
             "socialPsychologist" => $socialPsychologist,
             "people" => $people
+        ]);
+    }
+
+    public function employee(array $data)
+    {
+
+
+        //Create
+        if (!empty($data["action"]) && $data["action"] == "create") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $people = (new People())->findById($data['people_id']);
+
+            $employeeCreate = new Employee();
+            $employeeCreate->people_id = $people->id;
+
+            //Criação do Login para o Funcionário
+            $userCreate = new User();
+
+            //Gerando o Login, com parte do nome
+
+            $first = explode(' ', $people->firstName);
+            $firstPart = $first[0];
+
+            $last = explode(' ', $people->lastName);
+            $lastPart = end($last);
+            $login = strtolower($firstPart) . "." . strtolower($lastPart);
+
+
+            $userCreate->username = $login;
+            $userCreate->password = passwd_genered();
+            $userCreate->level = '4';
+            $userCreate->active = 'A';
+
+            if (!$userCreate->save()) {
+                $json["message"] = $userCreate->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $employeeCreate->users_id = $userCreate->id;
+
+            if (!$employeeCreate->save()) {
+                $json["message"] = $employeeCreate->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Funcionário (a) cadastrado com sucesso...")->flash();
+            redirect(url("/admin/funcionario/$employeeCreate->id"));
+        }
+
+        //Update
+        if (!empty($data["action"]) && $data["action"] == "update") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $employee = (new Employee())->findById($data['employee_id']);
+            $userUpdate = (new User())->findById($employee->users_id);
+            $userUpdate->username = $data['login'];
+            
+            if (!$userUpdate->save()) {
+                $json["message"] = $userUpdate->message()->render();
+                echo json_encode($json);
+                return;
+            }
+            $this->message->success("Usuário atualizado com sucesso...")->flash();
+            redirect(url("/admin/funcionario/$employee->id"));
+        }
+
+        //Inativar
+        if (!empty($data["action"]) && $data["action"] == "delete") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $employee = (new Employee())->findById($data['employee_id']);
+            $userDelete = (new User())->findById($employee->users_id);
+            $userDelete->active = 'I';
+
+            if (!$userDelete->save()) {
+                $json["message"] = $userDelete->message()->render();
+                echo json_encode($json);
+                return;
+            }
+            $this->message->success("Usuário inativado com sucesso...")->flash();
+            redirect(url("/admin/funcionario/$employee->id"));
+        }
+
+        //Ativar
+        if (!empty($data["action"]) && $data["action"] == "active") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $employee = (new Employee())->findById($data['employee_id']);
+            $userActive = (new User())->findById($employee->users_id);
+            $userActive->active = 'A';
+
+            if (!$userActive->save()) {
+                $json["message"] = $userActive->message()->render();
+                echo json_encode($json);
+                return;
+            }
+            $this->message->success("Usuário ativado com sucesso...")->flash();
+            redirect(url("/admin/funcionario/$employee->id"));
+        }
+
+
+        //read
+        $people = null;
+        $employee = null;
+        $user = null;
+
+        if (!empty($data["employee_id"])) {
+            $employeeId = filter_var($data["employee_id"], FILTER_SANITIZE_STRIPPED);
+            $employee = (new Employee())->findById($employeeId);
+            $user = (new User())->findById($employee->users_id);
+            $people = (new People())->findById($employee->people_id);
+
+
+            // var_dump($user);
+        }
+
+        // exit();
+
+
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " | Admin",
+            CONF_SITE_DESC,
+            url("/admin"),
+            theme("/assets/images.image.jpg", CONF_VIEW_ADMIN),
+            false
+        );
+
+        echo $this->view->render("employee", [
+            "head" => $head,
+            "people" => $people,
+            "user" => $user,
+            "employee" => $employee
         ]);
     }
 }

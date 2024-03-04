@@ -143,10 +143,14 @@
               <div class="mb-3 col-6">
                 <?php if ($psycho) : ?>
                   <a href="<?= url("/admin/psicologo/{$people->psycho($people->peopleId)->id}"); ?>" class="btn btn-success">Psicologa</a>
+                <?php elseif ($employee) : ?>
+                  <a href="<?= url("/admin/funcionario/{$employee->id}"); ?>" class="btn btn-success">Funcionário</a>
                 <?php else : ?>
                   <a href="<?= url("/admin/pessoa/$people->peopleId/novo-psicologo") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Psicologo (a)</a>
+                  <a href="<?= url("/admin/pessoa/$people->peopleId/novo-funcionario") ?>" data_post="<?= $people->peopleId; ?>" class="btn btn-primary">Novo Funcionário (a)</a>
                 <?php endif; ?>
               </div>
+
               <div class="mb-3 col-6 d-flex justify-content-end">
                 <form action="<?= url("/admin/pessoa/$people->peopleId"); ?>" method="post">
                   <!--ACTION SPOOFING-->
