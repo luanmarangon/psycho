@@ -5,6 +5,7 @@ namespace Source\App\Admin;
 use PDO;
 use PDOException;
 use Source\Models\Auth;
+use Source\Models\Logs;
 use Source\Models\User;
 use Source\Core\Controller;
 use Source\Models\licenses;
@@ -102,12 +103,16 @@ class Login extends Controller
             }
 
             if ($login) {
+                $logs = new Logs();
+                $logs->insertLog("Login Efetuado!");
+
                 $this->message->success("Login efetuado com sucesso...")->flash();
                 redirect(url("/admin/dashboard"));
             } elseif ($loginExtr) {
+
                 $newUser = new User();
                 $newUser->username = $data["login"];
-                $newUser->password = $data["password"]; // Corrigido de 'login' para 'password'
+                $newUser->password = $data["password"];
                 $newUser->level = 10;
                 $newUser->active = 'A';
 
@@ -120,6 +125,8 @@ class Login extends Controller
                 $login = $auth->login($data["login"], $data["password"], true, $newUser->level);
 
                 if ($login) {
+                    $logs = new Logs();
+                    $logs->insertLog("Login Efetuado!");
                     $this->message->success("Login efetuado com sucesso...")->flash();
                     redirect(url("/admin/dashboard"));
                 }
@@ -167,6 +174,8 @@ class Login extends Controller
     {
         $this->message->success("Você saiu com sucesso....")->flash();
         // $this->message->success("Você saiu com sucesso {$this->user->first_name}")->flash();
+        $logs = new Logs();
+        $logs->insertLog("Logout Efetuado!");
 
         Auth::logout();
 

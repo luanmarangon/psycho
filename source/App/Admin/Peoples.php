@@ -3,10 +3,12 @@
 
 namespace Source\App\Admin;
 
+use Source\Models\Logs;
 use Source\Models\User;
 use Source\Models\People;
 use Source\Models\Address;
 use Source\App\Admin\Admin;
+use Source\Models\Auth;
 use Source\Models\Employee;
 use Source\Models\SocialMedia;
 use Source\Models\Psychologist;
@@ -109,6 +111,8 @@ class Peoples extends Admin
             }
 
 
+            $logs = new Logs();
+            $logs->insertLog("Cadastrado a pessoa {$peopleCreate->id} e endereço {$peopleAddressCreate->id}.");
 
             $this->message->success("Pessoa cadastrada com sucesso...")->flash();
             redirect(url("/admin/pessoa/$peopleCreate->id"));
@@ -172,6 +176,9 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
+            $logs->insertLog("Atualizado o cadastro da pessoa {$peopleCreate->id} e endereço {$peopleAddressCreate->id}.");
+
             $this->message->success("Pessoa atualizada com sucesso...")->flash();
             redirect(url("/admin/pessoa/$peopleUpdate->id"));
         }
@@ -189,6 +196,9 @@ class Peoples extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            $logs = new Logs();
+            $logs->insertLog("Inativado o cadastro da pessoa {$peopleCreate->id}.");
 
             $this->message->success("Pessoa inativada com sucesso...")->flash();
             redirect(url("/admin/pessoas"));
@@ -321,6 +331,9 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
+            $logs->insertLog("Cadastrado o psicologo (a) {$psychologistCreate->id} no cadastro da pessoa {$people->id}, com o usuário de acesso {$userCreate->id}.");
+
             $this->message->success("Psicologo (a) cadastrado com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psychologistCreate->id"));
         }
@@ -367,6 +380,9 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
+            $logs->insertLog("Atualizado o cadastro do psicologo (a) {$psychologistUpdate->id} no cadastro da pessoa {$people->id}, com o usuário de acesso {$userUpdate->id}.");
+
             $this->message->success("Psicologo (a) cadastrado com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psychologistUpdate->id"));
         }
@@ -385,6 +401,9 @@ class Peoples extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            $logs = new Logs();
+            $logs->insertLog("Inativado o cadastro  do usuário {$userDelete->id} do psicologo (a) {$psycho->id}.");
 
             $this->message->success("Psicologo (a) inativado com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psycho->id"));
@@ -405,12 +424,12 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
+            $logs->insertLog("Ativado o cadastro  do usuário {$userDelete->id} do psicologo (a) {$psycho->id}.");
+
             $this->message->success("Psicologo (a) inativado com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psycho->id"));
         }
-
-
-
 
         //read
         $people = null;
@@ -420,9 +439,6 @@ class Peoples extends Admin
             $peopleId = filter_var($data["people_id"], FILTER_SANITIZE_STRIPPED);
             $people = (new People())->findById($peopleId);
         }
-
-
-
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -480,6 +496,8 @@ class Peoples extends Admin
 
     public function socialMediaPsycho(array $data)
     {
+        $logs = new Logs();
+
         //Create
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -509,6 +527,8 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs->insertLog("Criação da Rede Social {$psychologistMediaCreate->id} do Psicologo {$psychoId->id}.");
+
             $this->message->success("Rede Social do Psicologo (a) cadastrada com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psychoId->id/rede-social/$psychologistMediaCreate->id"));
         }
@@ -529,6 +549,8 @@ class Peoples extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            $logs->insertLog("Atualização da Rede Social {$psychologistMediaUpdate->id} do Psicologo {$psychoId->id}.");
 
             $this->message->success("Rede Social do Psicologo (a) alterada com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psychoId->id/rede-social/$psychologistMediaUpdate->id"));
@@ -555,6 +577,8 @@ class Peoples extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            $logs->insertLog("Exclusão da Rede Social {$psychologistMediaDelete->id} do Psicologo {$psychoId->id}.");
 
             $this->message->success("Rede Social do Psicologo (a) excluída com sucesso...")->flash();
             redirect(url("/admin/psicologo/$psychoId->id/redes-sociais"));
@@ -585,6 +609,9 @@ class Peoples extends Admin
                         echo json_encode($json);
                         return;
                     }
+
+                    $logs = new Logs();
+                    $logs->insertLog("Exclusão da Rede Social {$socialMediaDelete->id} do Psicologo {$psychoId->id}.");
                 }
             }
 
@@ -620,6 +647,7 @@ class Peoples extends Admin
 
     public function employee(array $data)
     {
+        $logs = new Logs();
 
 
         //Create
@@ -663,6 +691,10 @@ class Peoples extends Admin
                 return;
             }
 
+            //Inserção na table Log
+            // $logs = new Logs();
+            $logs->insertLog("Criando o cadastro de Usuário do Funcionário {$employeeCreate->id}, usuário {$userCreate->id}");
+
             $this->message->success("Funcionário (a) cadastrado com sucesso...")->flash();
             redirect(url("/admin/funcionario/$employeeCreate->id"));
         }
@@ -674,12 +706,17 @@ class Peoples extends Admin
             $employee = (new Employee())->findById($data['employee_id']);
             $userUpdate = (new User())->findById($employee->users_id);
             $userUpdate->username = $data['login'];
-            
+
             if (!$userUpdate->save()) {
                 $json["message"] = $userUpdate->message()->render();
                 echo json_encode($json);
                 return;
             }
+
+            // $logs = new Logs();
+            $logs->insertLog("Atualizando cadastro de Usuário do Funcionário {$employee->id}, usuário {$userUpdate->id}");
+
+
             $this->message->success("Usuário atualizado com sucesso...")->flash();
             redirect(url("/admin/funcionario/$employee->id"));
         }
@@ -697,6 +734,10 @@ class Peoples extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            // $logs = new Logs();
+            $logs->insertLog("Inativando cadastro de Usuário do Funcionário {$employee->id}, usuário {$userDelete->id}");
+
             $this->message->success("Usuário inativado com sucesso...")->flash();
             redirect(url("/admin/funcionario/$employee->id"));
         }
@@ -714,6 +755,10 @@ class Peoples extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            // $logs = new Logs();
+            $logs->insertLog("Ativando cadastro de Usuário do Funcionário {$employee->id}, usuário {$userActive->id}");
+
             $this->message->success("Usuário ativado com sucesso...")->flash();
             redirect(url("/admin/funcionario/$employee->id"));
         }
