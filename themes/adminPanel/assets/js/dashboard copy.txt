@@ -108,37 +108,10 @@ $(function () {
   // =====================================
   // Breakup
   // =====================================
-
-  // Selecionando o elemento <div> pelo ID
-  var divElement = document.getElementById('teste');
-  var divElement2 = document.getElementById('teste2');
-
-  // Obtendo todos os inputs dentro da div
-  var inputs = divElement.querySelectorAll('input[type="hidden"]');
-  var inputs2 = divElement2.querySelectorAll('input[type="hidden"]');
-
-  // Inicializando um array para armazenar os números
-  var numeros = [];
-  var labels = [];
-
-  // Iterando sobre os inputs e adicionando seus valores ao array de números
-  inputs.forEach(function (input) {
-    var valor = parseFloat(input.value); // Convertendo o valor para número
-    numeros.push(valor);
-  });
-  inputs2.forEach(function (input) {
-    var valor = parseFloat(input.value); // Convertendo o valor para número
-    labels.push(valor);
-  });
-
-  console.log(numeros);
-
   var breakup = {
     color: "#adb5bd",
-    series: numeros,
-    // series: [30, 10, 22],
-    // labels: ["Clientes", "Secretarios", "psicologos"],
-    labels: labels,
+    series: [38, 40, 25],
+    labels: ["2022", "2021", "2020"],
     chart: {
       width: 180,
       type: "donut",
@@ -165,7 +138,7 @@ $(function () {
     legend: {
       show: false,
     },
-    colors: ["#5D87FF", "#ecf20f", "#F9580D"],
+    colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
 
     responsive: [
       {

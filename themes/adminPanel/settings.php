@@ -1,7 +1,7 @@
 <?php $v->layout("_admin"); ?>
 
 <div class="container-fluid">
-<!-- Sobre -->
+  <!-- Sobre -->
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -114,16 +114,20 @@
       </div>
     </div>
   </div>
-<!-- Valores -->
+  <!-- Valores -->
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-6">
+        <div class="col-11">
           <h5 class="card-title fw-semibold mb-4">Valores</h5>
         </div>
-        <div class="col-6 d-flex justify-content-end">
-          <a href="<?= url("/admin/configuracoes/valores"); ?>" class="btn btn-primary icon-plus"> Novo Valor</a>
+        <!-- <div class="col-6 d-flex justify-content-end">
+          <a href="<?= url("/admin/configuracoes/valores"); ?>" class="btn btn-primary icon-plus"></a>
+        </div> -->
+        <div class="col-1 ">
+          <a href="<?= url("/admin/configuracoes/valores"); ?>" class="btn btn-primary icon-plus teste"></a>
         </div>
+
       </div>
       <div class="card">
         <?php if ($values) : ?>
@@ -131,7 +135,7 @@
 
             <div class="row">
               <div class="col-12">
-              <table>
+                <table>
                   <tr>
                     <th>Valor</th>
                     <th>Descrição</th>

@@ -3,9 +3,10 @@
 
 namespace Source\App\Admin;
 
-use Source\Models\Blog;
-use Source\App\Admin\Admin;
 use Source\Models\Auth;
+use Source\Models\Blog;
+use Source\Support\Pager;
+use Source\App\Admin\Admin;
 use Source\Models\Category;
 
 class Blogs extends Admin
@@ -15,9 +16,28 @@ class Blogs extends Admin
         parent::__construct(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN . "/");
     }
 
-    public function home()
+    public function home(array $data): void
     {
-        $blogs = (new Blog())->find()->fetch(true);
+        $blogs = (new Blog())->find();
+
+         //read
+         $search = null;
+
+         if (!empty($data["search"]) && str_search($data["search"]) != "all") {
+             $search = str_search($data["search"]);
+             $blogs = (new Blog())->find(" title LIKE CONCAT('%', :s, '%')", "s={$search}");
+ 
+             $this->message->success("Foram encontrados [ {$blogs->count()} ] resultados referentes a pesquisa.")->flash();
+ 
+             if (!$blogs->count()) {
+                 $blogs = (new Blog())->find();
+                 $this->message->info("Sua pesquisa não obteve resultados. Por favor, revise seus critérios de pesquisa")->flash();
+                 redirect("/admin/blogs");
+             }
+         }
+         $all = ($search ?? "all");
+         $pager = new Pager(url("/admin/blogs/{$all}/"));
+         $pager->pager($blogs->count(), 6, (!empty($data["page"]) ? $data["page"] : 1));
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -29,7 +49,8 @@ class Blogs extends Admin
 
         echo $this->view->render("blogs", [
             "head" => $head,
-            "blogs" => $blogs
+            "blogs" => $blogs->limit($pager->limit())->offset($pager->offset())->order("title ASC")->fetch(true),
+            "paginator" => $pager->render()
         ]);
     }
 

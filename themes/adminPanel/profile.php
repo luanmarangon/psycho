@@ -9,7 +9,8 @@
           <form action="<?= url("/admin/perfil"); ?>" method="post">
             <!--ACTION SPOOFING-->
             <input type="hidden" name="action" value="update" />
-            <input type="hidden" name="user_id" value="<?= $user->id; ?>" />
+            <input type="hidden" name="user_id" value="<?= $user->usersId; ?>" />
+           
             <div class="row">
               <h4>Dados de Acesso</h4>
               <small>Alterar os dados de acesso a plataforma</small>

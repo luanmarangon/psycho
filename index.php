@@ -67,10 +67,16 @@ $route->post("/empresa/{company_id}/redes-social/{socialMedia_id}", "Company:soc
 
 //Peoples
 $route->get("/pessoas", "Peoples:home");
+$route->post("/pessoas", "Peoples:home");
+$route->get("/pessoas/{search}/{page}", "Peoples:home");
+
 $route->get("/pessoa", "Peoples:people");
 $route->post("/pessoa", "Peoples:people");
+
 $route->get("/pessoa/{people_id}", "Peoples:people");
 $route->post("/pessoa/{people_id}", "Peoples:people");
+
+
 
 //PSichologist
 $route->get("/psicologas", "Peoples:psychologist");
@@ -99,6 +105,9 @@ $route->post("/funcionario/{employee_id}", "Peoples:employee");
 
 //Users
 $route->get("/usuarios", "Users:home");
+$route->post("/usuarios", "Users:home");
+$route->get("/usuarios/{search}/{page}", "Users:home");
+
 $route->get("/usuarios/{user_id}", "Users:user");
 $route->get("/usuarios/{user_id}/nova-senha", "Users:userPasswd");
 $route->get("/usuarios/{user_id}/inativar", "Users:user");
@@ -128,6 +137,9 @@ $route->post("/configuracoes/valores/{values_id}", "Settings:values");
 
 //Services
 $route->get("/servicos", "Service:home");
+$route->post("/servicos", "Service:home");
+$route->get("/servicos/{search}/{page}", "Service:home");
+
 $route->get("/servico", "Service:service");
 $route->post("/servico", "Service:service");
 $route->get("/servico/{service_id}", "Service:service");
@@ -136,6 +148,9 @@ $route->post("/servico/{service_id}", "Service:service");
 
 //Blogs
 $route->get("/blogs", "Blogs:home");
+$route->post("/blogs", "Blogs:home");
+$route->get("/blogs/{search}/{page}", "Blogs:home");
+
 $route->get("/blog", "Blogs:blog");
 $route->post("/blog", "Blogs:blog");
 $route->get("/blog/{blog_id}", "Blogs:blog");
@@ -143,6 +158,9 @@ $route->post("/blog/{blog_id}", "Blogs:blog");
 
 //Faq's
 $route->get("/faqs", "Faqs:home");
+$route->post("/faqs", "Faqs:home");
+$route->get("/faqs/{search}/{page}", "Faqs:home");
+
 $route->get("/faq", "Faqs:faq");
 $route->post("/faq", "Faqs:faq");
 $route->get("/faq/{faq_id}", "Faqs:faq");

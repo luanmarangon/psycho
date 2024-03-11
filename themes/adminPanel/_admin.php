@@ -131,7 +131,7 @@
               <li class="sidebar-item">
                 <a class="sidebar-link" href="<?= url("/admin/codes"); ?>" aria-expanded="false">
                   <span>
-                    <i class="icon-cogs"></i>
+                    <i class="icon-code-fork"></i>
                   </span>
                   <span class="hide-menu">Codigos</span>
                 </a>

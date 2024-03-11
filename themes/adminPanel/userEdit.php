@@ -11,24 +11,22 @@
           <div class="row">
             <div class="mb-3 col-6">
               <label for="inputNome" class="form-label">Nome</label>
-              <input type="text" class="form-control" name="firstName" value="<?= $user->firstName; ?>" disabled>
+              <input type="text" class="form-control" name="firstName" value="<?= $user->level < 10 ? $user->firstName : "Administrador do Sistema"; ?>" disabled>
             </div>
-
             <div class="mb-3 col-6">
               <label for="inputSobrenome" class="form-label">Sobrenome</label>
-              <input type="text" class="form-control" name="lastName" value="<?= $user->lastName; ?>" disabled>
+              <input type="text" class="form-control" name="lastName" value="<?= $user->level < 10 ? $user->lastName : "Administrador do Sistema"; ?>" disabled>
             </div>
           </div>
 
           <div class="row">
             <div class="mb-3 col-6">
               <label for="inputNome" class="form-label">Telefone</label>
-              <input type="text" class="form-control mask-phone" name="firstName" value="<?= $user->phone; ?>" disabled>
+              <input type="text" class="form-control mask-phone" name="firstName" value="<?= $user->level < 10 ? $user->phone : "9999999999"; ?>" disabled>
             </div>
-
             <div class="mb-3 col-6">
               <label for="inputSobrenome" class="form-label">E-Mail</label>
-              <input type="text" class="form-control mask-email" name="lastName" value="<?= $user->mail; ?>" disabled>
+              <input type="text" class="form-control mask-email" name="lastName" value="<?= $user->level < 10 ? $user->mail  : "Administrador do Sistema"; ?>" disabled>
             </div>
           </div>
           <h5>Credenciais de Acesso</h5>
@@ -38,7 +36,6 @@
               <label for="inputNome" class="form-label">Login</label>
               <input type="text" class="form-control" name="firstName" value="<?= $user->username; ?>" disabled>
             </div>
-
             <div class="mb-3 col-6">
               <label for="inputSobrenome" class="form-label">Nivel</label>
               <input type="text" class="form-control" name="lastName" value="<?= $user->level($user->level); ?>" disabled>
@@ -47,7 +44,7 @@
 
           <div class="row">
             <div class="mb3 col-6">
-              <a href="<?= url("/admin/usuarios/{$user->userId}?action=newpasswd") ?>" class="btn btn-success">Gerar nova Senha</a>
+              <a href="<?= url("/admin/usuarios/{$user->userId}?action=newpasswd") ?>" class="btn btn-success" disabled>Gerar nova Senha</a>
             </div>
             <div class="mb3 col-6 d-flex justify-content-end">
               <?php

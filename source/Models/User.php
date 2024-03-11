@@ -123,36 +123,36 @@ class User extends Model
 
     public function findUser(?string $where = null)
     {
-        // if ($terms) {
-        //     $this->query = "SELECT {$columns} FROM users u
-        //                             JOIN psychologist py ON py.users_id = u.id
-        //                             JOIN people p ON py.people_id = p.id
-        //                             WHERE {$terms}";
-        //     parse_str($params, $this->params);
-        //     return $this;
-        // }
-
-        // $this->query = "SELECT {$columns} FROM users u 
-        //                         JOIN psychologist py ON py.users_id = u.id
-        //                         JOIN people p ON py.people_id = p.id";
-        // return $this;
-
         $this->query = "SELECT u.id AS usersId, p.id AS peopleId, u.*, e.*, py.*, p.* FROM people p
                             LEFT JOIN psychologist py ON p.id = py.people_id
                             LEFT JOIN employee e ON p.id = e.people_id
-                            LEFT JOIN users u ON u.id = COALESCE(py.users_id, e.users_id)";
+                            LEFT JOIN users u ON u.id = COALESCE(py.users_id, e.users_id)
+                            WHERE COALESCE(py.users_id, e.users_id) IS NOT NULL";
 
         if ($where) {
-            $this->query .= " WHERE {$where}";
+            $this->query .= " and {$where}";
         }
 
 
         return $this;
     }
 
+    public function findUserFull(?string $where = null)
+    {
+        $this->query = "SELECT u.id AS usersId, p.id AS peopleId, u.*, e.*, py.*, p.* , COALESCE(py.people_id, e.people_id) AS people_id
+                            FROM users u
+                            LEFT JOIN psychologist py ON py.users_id = u.id
+                            LEFT JOIN employee e ON e.users_id = u.id
+                            LEFT JOIN people p ON p.id = COALESCE(py.people_id, e.people_id)";
+        return $this;
+    }
+
     public function level($level)
     {
         switch ($level) {
+            case $level == 10:
+                $level = "ADM Sistema";
+                break;
             case $level == 8:
                 $level = "Administrador";
                 break;

@@ -22,6 +22,8 @@
   --color-red: #D94352;
   --color-light: #F3F6FA;
   --color-dark: #1D2025;
+  --color-search: blueviolet;
+
 }
 
 
@@ -109,4 +111,48 @@ input[type="checkbox"]:checked::before {
 
 .status:hover::after {
   opacity: 1;
+}
+
+/*DEFAULT PAGINATOR*/
+
+.paginator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px auto;
+}
+
+.paginator a,
+.paginator span {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #cccccc;
+  border-right: 0;
+  color: #555555;
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+  transition-duration: 0.2s;
+}
+
+.paginator a:first-of-type {
+  -webkit-border-radius: var(--radius-normal) 0 0 var(--radius-normal);
+  -moz-border-radius: var(--radius-normal) 0 0 var(--radius-normal);
+  border-radius: var(--radius-normal) 0 0 var(--radius-normal);
+}
+
+.paginator a:last-of-type {
+  border-right: 1px solid #cccccc;
+  -webkit-border-radius: 0 var(--radius-normal) var(--radius-normal) 0;
+  -moz-border-radius: 0 var(--radius-normal) var(--radius-normal) 0;
+  border-radius: 0 var(--radius-normal) var(--radius-normal) 0;
+}
+
+.paginator a:hover {
+  background: var(--hover-color-green);
+  background-size: 200%;
+  color: #FBFBFB;
+}
+
+.paginator span {
+  background: #cccccc;
 }

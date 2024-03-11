@@ -100,7 +100,7 @@ class Auth extends Model
         $user = (new User())->find("username = :u", "u=$login")->fetch();
 
         if (!$user) {
-            $this->message->error("O e-mail informado não está cadastrado");
+            $this->message->error("O usuário informado não está cadastrado");
             return false;
         }
 

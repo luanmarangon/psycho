@@ -4,8 +4,9 @@
 namespace Source\App\Admin;
 
 use Source\Models\Faq;
-use Source\App\Admin\Admin;
 use Source\Models\Auth;
+use Source\Support\Pager;
+use Source\App\Admin\Admin;
 
 class Faqs extends Admin
 {
@@ -14,10 +15,28 @@ class Faqs extends Admin
         parent::__construct(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN . "/");
     }
 
-    public function home()
+    public function home(array $data): void
     {
-        $faqs = (new Faq())->find()->fetch(true);
+        $faqs = (new Faq())->find();
+        //read
+        $search = null;
 
+        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
+            $search = str_search($data["search"]);
+            $faqs = (new Faq())->find(" name LIKE CONCAT('%', :s, '%')", "s={$search}");
+
+            $this->message->success("Foram encontrados [ {$faqs->count()} ] resultados referentes a pesquisa.")->flash();
+
+
+            if (!$faqs->count()) {
+                $faqs = (new Faq())->find();
+                $this->message->info("Sua pesquisa não obteve resultados. Por favor, revise seus critérios de pesquisa")->flash();
+                redirect("/admin/faqs");
+            }
+        }
+        $all = ($search ?? "all");
+        $pager = new Pager(url("/admin/faqs/{$all}/"));
+        $pager->pager($faqs->count(), 9, (!empty($data["page"]) ? $data["page"] : 1));
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -29,7 +48,8 @@ class Faqs extends Admin
 
         echo $this->view->render("faq", [
             "head" => $head,
-            "faqs" => $faqs
+            "faqs" => $faqs->limit($pager->limit())->offset($pager->offset())->order("question ASC")->fetch(true),
+            "paginator" => $pager->render()
         ]);
     }
 
@@ -71,7 +91,7 @@ class Faqs extends Admin
             $faqUpdate->status = 'A';
             $faqUpdate->users_id = Auth::user()->id;
 
-           
+
 
 
             if (!$faqUpdate->save()) {
@@ -79,14 +99,14 @@ class Faqs extends Admin
                 echo json_encode($json);
                 return;
             }
-            
+
             $this->message->success("Pergunta e Resposta atualizada com sucesso...")->flash();
             redirect(url("/admin/faq/$faqUpdate->id"));
         }
 
         if (!empty($data["action"]) && $data["action"] == "Inativar") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
-            
+
             $faqInactive = (new Faq())->findById($data['faq_id']);
 
             $faqInactive->status = 'I';
@@ -97,7 +117,7 @@ class Faqs extends Admin
                 echo json_encode($json);
                 return;
             }
-            
+
             $this->message->success("Pergunta e Resposta inativado com sucesso...")->flash();
             redirect(url("/admin/faq/$faqInactive->id"));
         }
@@ -106,13 +126,13 @@ class Faqs extends Admin
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
             $faqDestroy = (new Faq())->findById($data['faq_id']);
-            
+
             if (!$faqDestroy->destroy()) {
                 $json["message"] = $faqDestroy->message()->render();
                 echo json_encode($json);
                 return;
             }
-            
+
             $this->message->success("Pergunta e Resposta excluída com sucesso...")->flash();
             redirect(url("/admin/faqs"));
         }
@@ -141,7 +161,7 @@ class Faqs extends Admin
                     // }
                 }
             }
-            
+
             $this->message->success("Pergunta e Resposta excluída com sucesso...")->flash();
             redirect(url("/admin/faqs"));
         }
@@ -159,7 +179,7 @@ class Faqs extends Admin
                 echo json_encode($json);
                 return;
             }
-            
+
             $this->message->success("Pergunta e Resposta inativado com sucesso...")->flash();
             redirect(url("/admin/faq/$faqActive->id"));
         }

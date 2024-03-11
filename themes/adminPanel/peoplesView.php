@@ -29,12 +29,12 @@
               <div class="row">
                 <div class="mb-3 col-6">
                   <label for="inputNome" class="form-label">Nome</label>
-                  <input type="text" class="form-control" name="firstName">
+                  <input type="text" class="form-control" name="firstName" required>
                 </div>
 
                 <div class="mb-3 col-6">
                   <label for="inputSobrenome" class="form-label">Sobrenome</label>
-                  <input type="text" class="form-control" name="lastName">
+                  <input type="text" class="form-control" name="lastName" required>
                 </div>
               </div>
               <div class="row">
@@ -176,12 +176,12 @@
               <div class="row">
                 <div class="mb-3 col-6">
                   <label for="inputNome" class="form-label">Nome</label>
-                  <input type="text" class="form-control" name="firstName" value="<?= $people->firstName; ?>">
+                  <input type="text" class="form-control" name="firstName" value="<?= $people->firstName; ?>" required>
                 </div>
 
                 <div class="mb-3 col-6">
                   <label for="inputSobrenome" class="form-label">Sobrenome</label>
-                  <input type="text" class="form-control" name="lastName" value="<?= $people->lastName; ?>">
+                  <input type="text" class="form-control" name="lastName" value="<?= $people->lastName; ?>" required>
                 </div>
               </div>
               <div class="row">

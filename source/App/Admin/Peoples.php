@@ -3,12 +3,13 @@
 
 namespace Source\App\Admin;
 
+use Source\Models\Auth;
 use Source\Models\Logs;
 use Source\Models\User;
 use Source\Models\People;
+use Source\Support\Pager;
 use Source\Models\Address;
 use Source\App\Admin\Admin;
-use Source\Models\Auth;
 use Source\Models\Employee;
 use Source\Models\SocialMedia;
 use Source\Models\Psychologist;
@@ -22,9 +23,35 @@ class Peoples extends Admin
         parent::__construct(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN . "/");
     }
 
-    public function home()
+    public function home(array $data): void
     {
-        $peoples = (new People())->find()->order("status ASC")->fetch(true);
+        $peoples = (new People())->find();
+
+        //read
+        $search = null;
+
+        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
+            $search = str_search($data["search"]);
+            $peoples = (new People())->find("
+                                            MATCH(firstName, lastName, cpf, rg) AGAINST(:s IN BOOLEAN MODE) 
+                                            OR firstName LIKE CONCAT('%', :s, '%') 
+                                            OR lastName LIKE CONCAT('%', :s, '%')
+                                            OR cpf LIKE CONCAT('%', :s, '%')
+                                            OR rg LIKE CONCAT('%', :s, '%')
+                                        ", "s={$search}");
+
+            $this->message->success("Foram encontrados [ {$peoples->count()} ] resultados referentes a pesquisa.")->flash();
+
+
+            if (!$peoples->count()) {
+                $peoples = (new People())->find();
+                $this->message->info("Sua pesquisa não obteve resultados. Por favor, revise seus critérios de pesquisa")->flash();
+                redirect("/admin/pessoas");
+            }
+        }
+        $all = ($search ?? "all");
+        $pager = new Pager(url("/admin/pessoas/{$all}/"));
+        $pager->pager($peoples->count(), 6, (!empty($data["page"]) ? $data["page"] : 1));
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -36,7 +63,8 @@ class Peoples extends Admin
 
         echo $this->view->render("peoples", [
             "head" => $head,
-            "peoples" => $peoples
+            "peoples" => $peoples->limit($pager->limit())->offset($pager->offset())->order("status ASC")->fetch(true),
+            "paginator" => $pager->render()
         ]);
     }
 
@@ -89,9 +117,20 @@ class Peoples extends Admin
 
 
 
+            if (strlen($peopleCreate->cpf) != 11) {
+                $this->message->warning("Por favor, forneça um CPF com 11 dígitos...")->flash();
+                redirect(url("/admin/pessoas"));
+            }
+
+
+            if ($peopleCreate->dateBirth > date('Y-m-d')) {
+                $this->message->warning("Ops! Parece que você inseriu uma data de nascimento que está no futuro. Por favor, revise sua entrada")->flash();
+                redirect(url("/admin/pessoa/$peopleCreate->id"));
+            }
+
+
             if ($peopleQuery) {
                 $this->message->warning("CPF já cadastrado...")->flash();
-                // $json["message"] = $peopleQuery->message("CPF ja Cadastrado")->render();
                 redirect(url("/admin/pessoas"));
             }
 
@@ -163,6 +202,20 @@ class Peoples extends Admin
 
             $peopleAddressUpdate->latitude = $addressAPI['latitude'];
             $peopleAddressUpdate->longitude = $addressAPI['longitude'];
+
+            if (strlen($peopleUpdate->cpf) != 11) {
+                $this->message->warning("Por favor, forneça um CPF com 11 dígitos...")->flash();
+                // $json["message"] = $peopleQuery->message("CPF ja Cadastrado")->render();
+                redirect(url("/admin/pessoa/$peopleUpdate->id"));
+            }
+
+
+            if ($peopleUpdate->dateBirth > date('Y-m-d')) {
+                $this->message->warning("Ops! Parece que você inseriu uma data de nascimento que está no futuro. Por favor, revise sua entrada")->flash();
+                // $json["message"] = $peopleQuery->message("CPF ja Cadastrado")->render();
+                redirect(url("/admin/pessoa/$peopleUpdate->id"));
+            }
+
 
             if (!$peopleAddressUpdate->save()) {
                 $json["message"] = $peopleAddressUpdate->message()->render();
@@ -496,8 +549,6 @@ class Peoples extends Admin
 
     public function socialMediaPsycho(array $data)
     {
-        $logs = new Logs();
-
         //Create
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -527,6 +578,7 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
             $logs->insertLog("Criação da Rede Social {$psychologistMediaCreate->id} do Psicologo {$psychoId->id}.");
 
             $this->message->success("Rede Social do Psicologo (a) cadastrada com sucesso...")->flash();
@@ -550,6 +602,7 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
             $logs->insertLog("Atualização da Rede Social {$psychologistMediaUpdate->id} do Psicologo {$psychoId->id}.");
 
             $this->message->success("Rede Social do Psicologo (a) alterada com sucesso...")->flash();
@@ -578,6 +631,7 @@ class Peoples extends Admin
                 return;
             }
 
+            $logs = new Logs();
             $logs->insertLog("Exclusão da Rede Social {$psychologistMediaDelete->id} do Psicologo {$psychoId->id}.");
 
             $this->message->success("Rede Social do Psicologo (a) excluída com sucesso...")->flash();
@@ -647,9 +701,6 @@ class Peoples extends Admin
 
     public function employee(array $data)
     {
-        $logs = new Logs();
-
-
         //Create
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -692,7 +743,7 @@ class Peoples extends Admin
             }
 
             //Inserção na table Log
-            // $logs = new Logs();
+            $logs = new Logs();
             $logs->insertLog("Criando o cadastro de Usuário do Funcionário {$employeeCreate->id}, usuário {$userCreate->id}");
 
             $this->message->success("Funcionário (a) cadastrado com sucesso...")->flash();
@@ -713,7 +764,7 @@ class Peoples extends Admin
                 return;
             }
 
-            // $logs = new Logs();
+            $logs = new Logs();
             $logs->insertLog("Atualizando cadastro de Usuário do Funcionário {$employee->id}, usuário {$userUpdate->id}");
 
 
@@ -735,7 +786,7 @@ class Peoples extends Admin
                 return;
             }
 
-            // $logs = new Logs();
+            $logs = new Logs();
             $logs->insertLog("Inativando cadastro de Usuário do Funcionário {$employee->id}, usuário {$userDelete->id}");
 
             $this->message->success("Usuário inativado com sucesso...")->flash();
@@ -756,7 +807,7 @@ class Peoples extends Admin
                 return;
             }
 
-            // $logs = new Logs();
+            $logs = new Logs();
             $logs->insertLog("Ativando cadastro de Usuário do Funcionário {$employee->id}, usuário {$userActive->id}");
 
             $this->message->success("Usuário ativado com sucesso...")->flash();

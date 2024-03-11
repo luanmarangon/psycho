@@ -47,7 +47,7 @@
                 </div>
                 <div class="mb-3 col-3">
                   <label for="inputNome" class="form-label">Postagem</label>
-                  <input type="date" class="form-control" name="post_at">
+                  <input type="date" class="form-control" name="post_at" value="<?= date('Y-m-d') ?>">>
                 </div>
               </div>
               <div class="row">

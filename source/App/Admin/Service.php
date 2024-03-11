@@ -3,6 +3,7 @@
 
 namespace Source\App\Admin;
 
+use Source\Support\Pager;
 use Source\App\Admin\Admin;
 use Source\Models\Services;
 
@@ -13,10 +14,28 @@ class Service extends Admin
         parent::__construct(__DIR__ . "/../../../themes/" . CONF_VIEW_ADMIN . "/");
     }
 
-    public function home()
+    public function home(array $data)
     {
+        $services = (new Services())->find();
 
-        $services = (new Services())->find()->fetch(true);
+        //read
+        $search = null;
+
+        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
+            $search = str_search($data["search"]);
+            $services = (new Services())->find(" name LIKE CONCAT('%', :s, '%')", "s={$search}");
+
+            $this->message->success("Foram encontrados [ {$services->count()} ] resultados referentes a pesquisa.")->flash();
+
+            if (!$services->count()) {
+                $services = (new Services())->find();
+                $this->message->info("Sua pesquisa não obteve resultados. Por favor, revise seus critérios de pesquisa")->flash();
+                redirect("/admin/servicos");
+            }
+        }
+        $all = ($search ?? "all");
+        $pager = new Pager(url("/admin/servicos/{$all}/"));
+        $pager->pager($services->count(), 6, (!empty($data["page"]) ? $data["page"] : 1));
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Admin",
@@ -28,7 +47,9 @@ class Service extends Admin
 
         echo $this->view->render("services", [
             "head" => $head,
-            "services" => $services
+            // "services" => $services
+            "services" => $services->limit($pager->limit())->offset($pager->offset())->order("name ASC")->fetch(true),
+            "paginator" => $pager->render()
         ]);
     }
 
@@ -106,7 +127,7 @@ class Service extends Admin
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
             $serviceDestroy = (new Services())->findById($data['service_id']);
-           
+
 
             if (!$serviceDestroy->destroy()) {
                 $json["message"] = $serviceDestroy->message()->render();
