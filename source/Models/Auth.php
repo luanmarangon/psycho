@@ -97,10 +97,10 @@ class Auth extends Model
             return false;
         }
 
-        $user = (new User())->find("username = :u", "u=$login")->fetch();
+        $user = (new User())->find("username = :u and active = :a", "u=$login&a=A")->fetch();
 
         if (!$user) {
-            $this->message->error("O usuário informado não está cadastrado");
+            $this->message->error("O usuário informado não está cadastrado, ou não possui permissão de acesso!");
             return false;
         }
 

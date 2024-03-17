@@ -28,4 +28,12 @@ class Psychologist extends Model
         }
         return null;
     }
+
+    public function people(): ?People
+    {
+        if ($this->people_id) {
+            return (new People())->findById($this->people_id);
+        }
+        return null;
+    }
 }

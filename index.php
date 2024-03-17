@@ -170,6 +170,15 @@ $route->post("/faq/{faq_id}", "Faqs:faq");
 $route->get("/codes", "Settings:code");
 
 
+
+//Agenda Scheduling 
+$route->get("/agenda", "Schedulings:home");
+$route->post("/agenda", "Schedulings:home");
+$route->get("/agenda/{search}/{page}", "Schedulings:home");
+
+$route->get("/agenda/novo", "Schedulings:create");
+$route->post("/agenda/novo", "Schedulings:create");
+
 /**
  * ERROR ROUTES
  */

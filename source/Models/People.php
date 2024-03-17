@@ -74,4 +74,9 @@ class People extends Model
         }
         return null;
     }
+
+
+
+
+    // public function 
 }

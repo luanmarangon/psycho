@@ -242,6 +242,33 @@ class Peoples extends Admin
 
             $peopleDelete = (new People())->findById($data['people_id']);
 
+            $psychologist = (new Psychologist())->find("people_id = :p", "p={$peopleDelete->id}")->fetch();
+            $employee = (new Employee())->find("people_id = :p", "p={$peopleDelete->id}")->fetch();
+
+            // var_dump($employee);
+
+            if ($psychologist){
+                $user = (new User())->findById($psychologist->users_id);
+                $user->active = 'I';
+
+                if (!$user->save()) {
+                    $json["message"] = $user->message()->render();
+                    echo json_encode($json);
+                    return;
+                }
+            }
+
+            if ($employee){
+                $user = (new User())->findById($employee->users_id);
+                $user->active = 'I';
+                
+                if (!$user->save()) {
+                    $json["message"] = $user->message()->render();
+                    echo json_encode($json);
+                    return;
+                }
+            }
+
             $peopleDelete->status = 'I';
 
             if (!$peopleDelete->save()) {
@@ -255,6 +282,27 @@ class Peoples extends Admin
 
             $this->message->success("Pessoa inativada com sucesso...")->flash();
             redirect(url("/admin/pessoas"));
+        }
+
+        //Active
+        if (!empty($data["action"]) && $data["action"] == "active") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+            $peopleActive = (new People())->findById($data['people_id']);
+
+            $peopleActive->status = 'A';
+
+            if (!$peopleActive->save()) {
+                $json["message"] = $peopleActive->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $logs = new Logs();
+            $logs->insertLog("Ativado o cadastro da pessoa {$peopleActive->id}.");
+
+            $this->message->success("Pessoa inativada com sucesso...")->flash();
+            redirect(url("/admin/pessoa/$peopleActive->id"));
         }
 
 

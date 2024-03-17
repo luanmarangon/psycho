@@ -108,7 +108,7 @@
         <div class="mb-4">
           <h5 class="card-title fw-semibold">Agenda do Dia</h5>
         </div>
-        <ul class="timeline-widget mb-0 position-relative mb-n5" style="overflow-y: auto; max-height: 350px;">
+        <ul class="timeline-widget mb-0 position-relative mb-n5" style="overflow-y: auto; max-height: 300px;">
           <?php for ($i = 0; $i < 6; $i++) : ?>
             <li class="timeline-item d-flex position-relative overflow-hidden">
               <div class="timeline-time text-dark flex-shrink-0 text-end">09:30</div>

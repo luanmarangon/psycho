@@ -152,11 +152,19 @@
               </div>
 
               <div class="mb-3 col-6 d-flex justify-content-end">
-                <form action="<?= url("/admin/pessoa/$people->peopleId"); ?>" method="post">
-                  <!--ACTION SPOOFING-->
-                  <input type="hidden" name="action" value="delete" />
-                  <button class="btn btn-danger">Inativar</button>
-                </form>
+                <?php if ($people->status === 'A') : ?>
+                  <form action="<?= url("/admin/pessoa/$people->peopleId"); ?>" method="post">
+                    <!--ACTION SPOOFING-->
+                    <input type="hidden" name="action" value="delete" />
+                    <button class="btn btn-danger">Inativar</button>
+                  </form>
+                <?php else : ?>
+                  <form action="<?= url("/admin/pessoa/$people->peopleId"); ?>" method="post">
+                    <!--ACTION SPOOFING-->
+                    <input type="hidden" name="action" value="active" />
+                    <button class="btn btn-success">Ativar</button>
+                  </form>
+                <?php endif; ?>
               </div>
             </div>
 
